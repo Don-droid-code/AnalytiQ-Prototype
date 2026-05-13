@@ -5,3 +5,4 @@ pyyaml>=6.0
 weasyprint>=60.0
 jinja2>=3.0.0
 python-dateutil>=2.8.0
+chardet>=4.0.0
