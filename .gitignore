@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Rapports générés
+reports/
+*.pdf
+
+# Datasets réels (jamais de données clients)
+*.csv
+*.xlsx
+*.xls
+
+# Sauf les datasets synthétiques de test
+!test_*.csv
+!test_*.xlsx
+!*_ma_*.csv
+!*_ma_*.xlsx
+!retail_ma_500.csv
+!payroll_ma_300.csv
+!test_aci_with_dedup.csv
+!test_aci_no_dedup.csv
+!test_temporal_complete.csv
+
+# OS
+.DS_Store
+Thumbs.db

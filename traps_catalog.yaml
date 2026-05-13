@@ -1,0 +1,1426 @@
+metadata:
+  version: '1.0'
+  created: '2025'
+  author: Othmane Afif
+  email: othmane.afif@outlook.com
+  project: AnalytiQ Pro
+  domain: analytiq-pro.com
+  description: Source of truth — 91 traps (69 data + 22 temporal)
+  totals:
+    data_traps: 69
+    temporal_traps: 22
+    total: 91
+data_traps:
+- id: T01
+  label: Misinterpreted Negative Amounts
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: A negative amount can represent a refund, a correction entry, or a genuine data entry error. Without proper
+    context, these three cases are indistinguishable.
+  example: 'Revenue column showing -5,000: is it a customer refund, a duplicate reversal, or a keying mistake?'
+  consequence: Incorrect revenue calculation, artificial losses or gains in financial reporting, compliance risk.
+  best_practices: ① Add a 'transaction_type' column (Sale / Refund / Correction) ② Validate with the accounting team ③ Plot
+    the distribution of negative values ④ Cross-check against CRM / billing system
+  mental_rule: Every negative amount is a business question — never delete it without investigation.
+- id: T02
+  label: Duplicate Entries / Double Billing
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: The same transaction appears twice due to multiple imports, system synchronisation issues, or human error.
+  example: An invoice imported via ERP then again via a CSV export → invisible duplicate.
+  consequence: Inflated revenue figures, non-compliant financial statements, legal and audit risk.
+  best_practices: ① Deduplicate on composite key (ID + date + amount) ② Hash-based integrity check ③ Import audit trail ④
+    Automated bank reconciliation
+  mental_rule: Any row without a unique identifier is a potential trap.
+- id: T03
+  label: Accounting Date vs. Transaction Date Mismatch
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: The date a transaction physically occurs (transaction date) differs from the date it is posted to the ledger
+    (accounting date). This gap can span financial period closures.
+  example: Sale made on 31/12 but posted on 02/01 → revenue attributed to the wrong fiscal year.
+  consequence: Period-end reporting errors, non-compliance with IFRS/GAAP standards.
+  best_practices: ① Store both dates in the database ② Build separate views by date type ③ Alert if gap exceeds N days ④ Document
+    the posting rule clearly
+  mental_rule: Always store the transaction date AND the accounting date as separate fields.
+- id: T04
+  label: Missing or Inconsistent Currency
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: Multi-currency transactions with no currency label, or values in different currencies mixed in the same column,
+    make all aggregations meaningless.
+  example: 'Column ''Amount'': 1,000 (USD), 1,000 (EUR), 1,000 (GBP) with no currency tag → total = 3,000 with no meaning.'
+  consequence: Incorrect revenue totals, undetected FX risk, impossible group consolidation.
+  best_practices: ① Add a 'currency_code' column (ISO 4217 standard) ② Create a normalized 'amount_usd' column ③ Store the
+    exchange rate used ④ Alert if currency_code is NULL
+  mental_rule: No currency = no reliable amount. Period.
+- id: T05
+  label: Aggregation Performed Before Cleaning
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: Computing totals or averages on uncleaned data propagates every error into all derived KPIs downstream.
+  example: Summing revenue including duplicates → inflated KPIs sent to management.
+  consequence: Entire downstream chain corrupted; decisions made on wrong metrics.
+  best_practices: '① Enforce a strict ETL pipeline: clean BEFORE aggregating ② Version datasets (raw / clean / aggregated)
+    ③ Document each transformation step in a data catalog ④ Automated data quality tests'
+  mental_rule: Clean first. Aggregate second. Always.
+- id: T06
+  label: Zeros Used as Missing Values
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: Zero values that actually mean 'not provided' or 'not applicable' distort all statistics.
+  example: 'Column ''tax_amount'' = 0: is it a tax-exempt transaction or a missing value?'
+  consequence: Skewed averages, medians, and totals. Biased ML models.
+  best_practices: ① Use NULL/NaN for missing data — never 0 ② Document the meaning of zero for each field ③ Analyse the distribution
+    of zeros ④ Cross-validate against source system
+  mental_rule: 0 ≠ missing. Distinguish them systematically.
+- id: T07
+  label: Totals Don't Match Line Items
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: The sum of detail lines does not match the declared total, often caused by rounding differences, partial deletions,
+    or import errors.
+  example: Invoice total = $10,250 but sum of line items = $10,230.
+  consequence: Audit failure, accounting non-compliance, undetected fraud risk.
+  best_practices: ① Always recompute totals from line items ② Build automated integrity checks ③ Alert if discrepancy exceeds
+    defined threshold ④ Never trust pre-computed totals in source files
+  mental_rule: Always recalculate. Never trust inherited totals.
+- id: T08
+  label: Inconsistent Rounding Across Systems
+  sector: Finance / Accounting / Billing
+  criticality: Common
+  penalty: 8
+  department: Finance
+  description: Different systems apply different rounding rules, creating micro-discrepancies that accumulate at scale.
+  example: System A rounds to 2 decimal places, System B to 4 → penny-level gaps that total $100+ at scale.
+  consequence: Bank reconciliation failures, complex audit trails.
+  best_practices: ① Standardize on a single precision level (e.g. 6 decimal places) ② Document the rounding rule ③ Use Decimal
+    type instead of float ④ Test aggregations on controlled datasets
+  mental_rule: Define one rounding rule and document it everywhere.
+- id: T09
+  label: Legitimate Retroactive Transactions
+  sector: Finance / Accounting / Billing
+  criticality: Common
+  penalty: 8
+  department: Finance
+  description: Accounting adjustments or corrections legitimately modify past periods but may appear as anomalies in automated
+    checks.
+  example: A credit note issued in March for a January invoice → appears as a false anomaly.
+  consequence: False positives in anomaly detection. Biased time-series analysis.
+  best_practices: ① Flag retroactive transactions with a dedicated column ② Maintain full audit trail of all modifications
+    ③ Analyse initial and corrective transactions separately ④ Alert if corrections exceed X% of total volume
+  mental_rule: Every retroactive modification must be traced and explained.
+- id: T10
+  label: Accounting Rule Changes Over Time
+  sector: Finance / Accounting / Billing
+  criticality: Common
+  penalty: 8
+  department: Finance
+  description: Accounting standards evolve (e.g. IFRS 16 lease adoption) and change the definition of variables, breaking
+    historical comparisons.
+  example: Lease obligations reclassified under IFRS 16 → time series non-comparable without restatement.
+  consequence: Invalid historical comparisons without proper restatement.
+  best_practices: ① Document the effective date of each rule change ② Build 'like-for-like' indicators ③ Add an 'accounting_standard'
+    column ④ Restate historical data where required
+  mental_rule: Comparing figures across years requires verifying the rules used in each year.
+- id: T11
+  label: Inconsistent or Impossible Age Values
+  sector: Human Resources (HR)
+  criticality: Critical
+  penalty: 20
+  department: HR
+  description: A negative age, an age above 100, or an age inconsistent with the hire date or date of birth reveals a data
+    entry or calculation error.
+  example: Employee born in 2000, hired in 1998 → negative tenure. Age = -3 in the database.
+  consequence: Incorrect retirement and seniority bonus calculations. Legal compliance risk.
+  best_practices: '① Validate: age = year(today) - year(birth_date) ② Enforce bounds [16, 75] ③ Cross-check birth_date + hire_date
+    ④ Automated validation at import'
+  mental_rule: Every demographic data point is regulated. Validate at the point of entry.
+- id: T12
+  label: Salary = 0 or Placeholder Value
+  sector: Human Resources (HR)
+  criticality: Critical
+  penalty: 20
+  department: HR
+  description: Salary values of 0, -1, 9999, or 999999 typically indicate placeholder or migration errors — not actual compensation.
+  example: 100 employees with salary = 0 after an HRIS migration → corrupted data undetected.
+  consequence: Payroll cost underestimated, HR decisions based on wrong data.
+  best_practices: ① List unusual distinct values ② Validate min/max by country and job level ③ Flag rare values (0, -1, 999...)
+    ④ Cross-check against actual payroll run
+  mental_rule: A salary of zero is never neutral in HR.
+- id: T13
+  label: Job Title Category Explosion
+  sector: Human Resources (HR)
+  criticality: Critical
+  penalty: 20
+  department: HR
+  description: Free-text job titles generate hundreds of variants for the same role, making headcount-by-function analysis
+    impossible.
+  example: '''Sr Dev'', ''Senior Developer'', ''Senior Dev'', ''Developer (Sr)'', ''Dev Sr'' = 5 entries for 1 role.'
+  consequence: Unable to analyse headcount by function; invalid cross-site comparisons.
+  best_practices: ① Implement a standardized job taxonomy ② Use NLP to cluster variants ③ Create a normalized 'job_family'
+    column ④ Train managers on standardized entry
+  mental_rule: A free-text field = an impossible org chart. Always normalize.
+- id: T14
+  label: Sensitive Data Not Properly Masked
+  sector: Human Resources (HR)
+  criticality: Critical
+  penalty: 20
+  department: HR
+  description: Personal or confidential data (social security numbers, salaries, disability status) accessible without restriction
+    or exposed in unsecured exports.
+  example: Excel file shared with all managers containing salaries and medical information.
+  consequence: GDPR non-compliance, financial penalties, privacy breach, reputational risk.
+  best_practices: ① Pseudonymize at extraction ② Role-based access control (RBAC) ③ Regular export audit ④ Data privacy training
+    for all users
+  mental_rule: HR data is human, legal, and regulated — never just technical.
+- id: T15
+  label: Active Employee With Termination Date Populated
+  sector: Human Resources (HR)
+  criticality: Critical
+  penalty: 20
+  department: HR
+  description: An employee flagged as 'Active' has a termination date populated — a logical contradiction indicating an update
+    failure.
+  example: Status = 'Active', termination_date = '2024-03-01' → which field should be trusted?
+  consequence: Overstated headcount, IT access not revoked, salary paid after departure.
+  best_practices: '① Rule: if termination_date is set → status must = Inactive ② Automated alert on contradiction ③ Mandatory
+    validation workflow at exit ④ Monthly inconsistency audit'
+  mental_rule: Active status + termination date = a contradiction that must be resolved immediately.
+- id: T16
+  label: Non-Random Missing Data (Bias)
+  sector: Human Resources (HR)
+  criticality: Common
+  penalty: 8
+  department: HR
+  description: 'Missing values are not randomly distributed: specific groups (women, minorities, contractors) systematically
+    have more missing data.'
+  example: Performance appraisals missing predominantly for fixed-term contract employees → biased performance analysis.
+  consequence: Biased analytics leading to discriminatory HR decisions.
+  best_practices: ① Analyze missing value distribution by segment ② Test for MCAR/MAR/MNAR ③ Never impute without prior analysis
+    ④ Disclose bias explicitly in conclusions
+  mental_rule: Missing values are never innocent. Always analyze why they are missing.
+- id: T17
+  label: Incorrectly Calculated Seniority
+  sector: Human Resources (HR)
+  criticality: Common
+  penalty: 8
+  department: HR
+  description: Seniority is computed from the wrong date (account creation date vs actual hire date) or without accounting
+    for employment breaks.
+  example: 'Rehired employee: seniority counted from first hire without reset → overstated tenure.'
+  consequence: Incorrect seniority bonuses, legal errors on notice period entitlements.
+  best_practices: ① Define calculation rule per collective agreement ② Store all contract dates ③ Compute dynamically from
+    stored dates ④ Document the rule in the data dictionary
+  mental_rule: Seniority has a legal definition. Always verify the calculation rule.
+- id: T18
+  label: Status Changes Not Historized
+  sector: Human Resources (HR)
+  criticality: Common
+  penalty: 8
+  department: HR
+  description: Job title, status, or salary changes overwrite the historical record instead of being versioned as new entries.
+  example: Employee promotion overwrites their old record → impossible to retrieve previous salary or role.
+  consequence: Impossible time-series HR analytics, compromised legal compliance.
+  best_practices: ① Implement SCD Type 2 (Slowly Changing Dimensions) ② Add valid_from / valid_to columns ③ Never overwrite
+    — always insert a new version ④ Audit changes via a dedicated log table
+  mental_rule: In HR, history is as important as the present.
+- id: T19
+  label: Impossible Negative Quantities
+  sector: Operations / Logistics / Supply Chain
+  criticality: Critical
+  penalty: 20
+  department: Operations
+  description: Negative values in stock, order, or production fields are physically impossible and indicate data entry errors
+    or incorrect return processing.
+  example: Stock = -50 units in warehouse → physically impossible.
+  consequence: Unnecessary replenishment orders triggered, supply chain KPIs distorted.
+  best_practices: '① Validation rule: stock ≥ 0 except in documented edge cases ② Track returns in a separate flow ③ Alert
+    on any value < 0 ④ Daily physical-to-system stock reconciliation'
+  mental_rule: What is physically impossible in reality must be flagged in your data.
+- id: T20
+  label: Impossible Logistics Dates
+  sector: Operations / Logistics / Supply Chain
+  criticality: Critical
+  penalty: 20
+  department: Operations
+  description: Delivery date earlier than order date, or shipment date after receipt date — violations of causal temporal
+    logic.
+  example: delivery_date = 2024-01-05, order_date = 2024-01-10 → delivered before it was ordered.
+  consequence: Lead time analysis impossible, false-positive delay alerts.
+  best_practices: '① Enforce: delivery_date ≥ order_date ≥ creation_date ② Store all timestamps in UTC ③ Temporal consistency
+    check at import ④ Log all anomalies'
+  mental_rule: Causal and temporal logic is non-negotiable.
+- id: T21
+  label: Sensor / IoT Event Duplicates
+  sector: Operations / Logistics / Supply Chain
+  criticality: Critical
+  penalty: 20
+  department: Operations
+  description: IoT sensors or scan systems generate duplicated events during network retries or retransmissions.
+  example: A parcel scanned 3 times at the same checkpoint → 3 identical rows with slightly different timestamps.
+  consequence: Overstated flow metrics, incorrect productivity KPIs.
+  best_practices: ① Deduplicate within a time window (e.g. same ID + same event within 5 seconds) ② Composite deduplication
+    key ③ Message broker with native deduplication (e.g. Kafka) ④ Regular volume audit by source
+  mental_rule: Real-time data comes with its own class of duplication traps.
+- id: T22
+  label: Lead Time = 0 Used as Default
+  sector: Operations / Logistics / Supply Chain
+  criticality: Critical
+  penalty: 20
+  department: Operations
+  description: A processing time of zero often indicates a default placeholder or unpopulated field rather than a genuinely
+    instantaneous operation.
+  example: lead_time = 0 for 30% of orders → mean lead time calculation severely distorted.
+  consequence: Supply chain optimization driven by incorrect data, leading to stockouts or overstocking.
+  best_practices: ① Distinguish unknown lead time (NULL) from zero lead time (0) ② Analyze the distribution of zeros ③ Cross-reference
+    with order types ④ Document valid cases where lead time = 0
+  mental_rule: A lead time of 0 is either exceptional or an error. Always investigate.
+- id: T23
+  label: Multi-System Data Not Aligned
+  sector: Operations / Logistics / Supply Chain
+  criticality: Common
+  penalty: 8
+  department: Operations
+  description: Data from ERP, WMS, and TMS uses different product codes, units of measure, or reference dates.
+  example: 'ERP: quantity in pallets. WMS: quantity in cartons. Direct aggregation is meaningless.'
+  consequence: Impossible reconciliation, inconsistent KPIs across departments.
+  best_practices: ① Build a master data reference (golden record) ② Map codes across systems ③ Standardize units at extraction
+    ④ Document all conversion rules
+  mental_rule: Multiple sources = multiple reference systems that must be aligned before any analysis.
+- id: T24
+  label: Timezone Issues
+  sector: Operations / Logistics / Supply Chain
+  criticality: Common
+  penalty: 8
+  department: Operations
+  description: Timestamps stored without timezone information create inconsistencies across geographically distributed sites.
+  example: 'Paris warehouse (UTC+1) + New York warehouse (UTC-5): 6-hour gap not handled → event sequencing incorrect.'
+  consequence: Cross-site flow tracking impossible, false delay alerts triggered.
+  best_practices: ① Store all timestamps in UTC ② Add a timezone column for context ③ Convert to local time only at display
+    layer ④ Test conversions around DST transitions
+  mental_rule: UTC at storage. Local time at display. Always.
+- id: T25
+  label: Duplicate Customer Identity
+  sector: Marketing / Sales / CRM
+  criticality: Critical
+  penalty: 20
+  department: Marketing
+  description: The same customer appears multiple times with different IDs, typically due to multiple account creations across
+    channels or time.
+  example: John Smith created an account in 2021 and another in 2023 → 2 profiles, fragmented history.
+  consequence: Incorrect CAC/LTV, campaigns sent twice, corrupted segmentation.
+  best_practices: ① Deduplicate by email / phone / address ② Fuzzy matching on name + birth date ③ Create a 'golden record'
+    per customer ④ Human-validated merge process
+  mental_rule: One customer = one ID. Always.
+- id: T26
+  label: Leads Counted Multiple Times
+  sector: Marketing / Sales / CRM
+  criticality: Critical
+  penalty: 20
+  department: Marketing
+  description: The same prospect is counted as multiple leads because they submitted different forms or entered through multiple
+    channels.
+  example: Same email across 3 different forms → 3 leads in the pipeline = pipeline inflated by 200%.
+  consequence: Underestimated conversion rate, incorrect CPL, biased sales targets.
+  best_practices: ① Deduplicate by email before counting ② Cross-channel unique identifier ③ Lead matching before attribution
+    ④ Deduplication time window (e.g. same email within 30 days)
+  mental_rule: One lead = one real person with a real purchase intent.
+- id: T27
+  label: Free-Form Marketing Source Values
+  sector: Marketing / Sales / CRM
+  criticality: Critical
+  penalty: 20
+  department: Marketing
+  description: Without a controlled value list, marketing sources explode into hundreds of variants for the same channel.
+  example: '''Google'', ''google'', ''Google Ads'', ''Adwords'', ''GGL'' = 5 entries for the same source.'
+  consequence: Marketing attribution impossible, ROAS uncalculable, budget decisions distorted.
+  best_practices: ① Implement a controlled value list ② Map variants to a canonical reference ③ Standardize UTM parameters
+    ④ Use NLP clustering to normalize existing values
+  mental_rule: Attribution = clean data. No clean data = no reliable attribution.
+- id: T28
+  label: First Rows Bias in Campaign Analysis
+  sector: Marketing / Sales / CRM
+  criticality: Critical
+  penalty: 20
+  department: Marketing
+  description: Analyses that use only the first rows of a file sorted by date or ID create a severe selection bias.
+  example: Analysis on the first 10,000 records of a 1M-row file → over-representation of old contacts.
+  consequence: Poorly targeted campaigns, false conclusions about customer behaviour.
+  best_practices: ① Use stratified random sampling ② Verify the temporal distribution of the sample ③ Never use head() without
+    checking the underlying distribution ④ Shuffle before sampling
+  mental_rule: A non-random sample is worse than no sample at all.
+- id: T29
+  label: Excessive Outlier Removal
+  sector: Marketing / Sales / CRM
+  criticality: Common
+  penalty: 8
+  department: Marketing
+  description: Removing all outliers in a marketing context destroys important signals (VIP customers, viral campaigns).
+  example: Removing orders > $1,000 as 'outliers' eliminates your best customers from the analysis.
+  consequence: Loss of signal on the most profitable segments, biased predictive models.
+  best_practices: ① Analyze outliers before deciding ② Build separate segments for extreme values ③ Document every removal
+    decision ④ Test models with and without outliers
+  mental_rule: In marketing, an outlier might be your best customer.
+- id: T30
+  label: Biased but Technically 'Clean' Data
+  sector: Marketing / Sales / CRM
+  criticality: Common
+  penalty: 8
+  department: Marketing
+  description: Data that is technically error-free but non-representative of reality due to selection bias or response bias.
+  example: Satisfaction survey sent only to active customers → massive selection bias.
+  consequence: False conclusions about customer satisfaction, wrong strategic decisions.
+  best_practices: ① Document the data collection method ② Analyze who is ABSENT from the data ③ Compare against external benchmarks
+    ④ Apply corrective weights
+  mental_rule: Clean data on a biased sample is still wrong data.
+- id: T31
+  label: Data Leakage
+  sector: Machine Learning / Data Science
+  criticality: Critical
+  penalty: 20
+  department: ML_DataScience
+  description: Future information or target-correlated variables leak into the training features, creating an illusion of
+    high performance.
+  example: Using 'is_churn = True/False' as a feature to predict churn → 99% accuracy that is completely fake.
+  consequence: Model is useless in production. False promises on model performance.
+  best_practices: ① Define a strict temporal boundary between train and test ② Audit each feature for correlation with the
+    target ③ Use TimeSeriesSplit for time-dependent data ④ Include preprocessing inside the cross-validation pipeline
+  mental_rule: A model that is too good is often deeply wrong.
+- id: T32
+  label: Imputation Before Train/Test Split
+  sector: Machine Learning / Data Science
+  criticality: Critical
+  penalty: 20
+  department: ML_DataScience
+  description: Imputing missing values on the full dataset before splitting leaks information from the test set into the training
+    set.
+  example: 'Imputing the median on the full dataset: the median is calculated using test data → data leakage.'
+  consequence: Overestimated performance. Model fails to generalize to new data.
+  best_practices: ① Always split BEFORE imputing ② Use sklearn Pipeline to enforce the correct order ③ Compute imputation
+    statistics on train set only ④ Document the full pipeline
+  mental_rule: Split first. Impute second. Never the other way around.
+- id: T33
+  label: Outliers Removed Without Analysis
+  sector: Machine Learning / Data Science
+  criticality: Critical
+  penalty: 20
+  department: ML_DataScience
+  description: Systematically removing all outliers without understanding their origin can destroy the model signal.
+  example: Removing transactions > 3 standard deviations eliminates 5% of data containing 40% of target variance.
+  consequence: Model blind to extreme cases that are often the most important (fraud, churn, VIP).
+  best_practices: ① Analyze outliers before any decision ② Test models with and without them ③ Use outlier-robust algorithms
+    ④ Document every treatment decision
+  mental_rule: In ML, a removed outlier = a decision to document, not an automatic action.
+- id: T34
+  label: Feature Engineering on Raw (Uncleaned) Data
+  sector: Machine Learning / Data Science
+  criticality: Critical
+  penalty: 20
+  department: ML_DataScience
+  description: Creating derived variables (ratios, aggregates) from data containing errors amplifies and propagates those
+    errors.
+  example: Feature = revenue / headcount, but revenue contains duplicates → biased ratio.
+  consequence: Corrupted features, models trained on false signals.
+  best_practices: '① Clean before engineering features ② Validate source data quality ③ Test the distributions of created
+    features ④ Pipeline order: clean → validate → feature engineering'
+  mental_rule: Garbage in, garbage feature out.
+- id: T35
+  label: Informative Missing Values Dropped
+  sector: Machine Learning / Data Science
+  criticality: Common
+  penalty: 8
+  department: ML_DataScience
+  description: Missing values can carry strong predictive information (e.g. 'no value = no activity') and should not be imputed
+    away.
+  example: 'Missing last_login_date: indicates the customer never used the product → powerful feature eliminated.'
+  consequence: Loss of a strong predictive signal. Less accurate model.
+  best_practices: ① Create a binary feature 'is_missing_[col]' ② Analyze correlation between missingness and the target ③
+    Test imputation vs. retention ④ Document the decision
+  mental_rule: Missing values can be your best features.
+- id: T36
+  label: Incorrectly Applied Standardization
+  sector: Machine Learning / Data Science
+  criticality: Common
+  penalty: 8
+  department: ML_DataScience
+  description: Normalizing or standardizing data before the train/test split, or using the wrong scaler for the algorithm
+    type.
+  example: MinMaxScaler fitted on the full dataset → test set influences the scaling of the train set.
+  consequence: Indirect data leakage, overestimated cross-validation performance.
+  best_practices: ① Fit the scaler on the train set only ② Apply (transform) on train and test separately ③ Choose the right
+    scaler for the algorithm ④ Integrate into an sklearn Pipeline
+  mental_rule: Fit on train. Transform on train and test. Never fit on test.
+- id: T37
+  label: Definition Changes Across Years
+  sector: Public Data / Socio-Economic
+  criticality: Critical
+  penalty: 20
+  department: PublicData
+  description: Statistical agencies change their definitions, methodologies, or scopes without systematically restating the
+    full time series.
+  example: ILO unemployment rate redefined in 2018 → series break not flagged in raw data.
+  consequence: Invalid historical comparisons, artificial trend lines created.
+  best_practices: ① Always read metadata and footnotes ② Flag series breaks explicitly ③ Use fixed-base indices for comparisons
+    ④ Cross-reference multiple sources
+  mental_rule: Comparing without context is misinformation.
+- id: T38
+  label: Geographically Biased Missing Data
+  sector: Public Data / Socio-Economic
+  criticality: Critical
+  penalty: 20
+  department: PublicData
+  description: Rural areas, developing countries, or disadvantaged regions are systematically under-represented in public
+    datasets.
+  example: 'Global income analysis: 80% of data points from 20 developed countries.'
+  consequence: Non-generalizable conclusions, poorly targeted public policies.
+  best_practices: ① Document coverage zones ② Use geographic imputation techniques ③ Weight by representativeness ④ Limit
+    conclusions to the actual coverage area
+  mental_rule: Absent data speaks too. Listen to its silence.
+- id: T39
+  label: Inconsistent Units Across Sources
+  sector: Public Data / Socio-Economic
+  criticality: Critical
+  penalty: 20
+  department: PublicData
+  description: Data from different sources uses incompatible units (millions vs. billions, USD vs. EUR, per capita vs. absolute).
+  example: GDP in USD billions from IMF, in USD millions from World Bank → direct aggregation multiplies by 1,000.
+  consequence: Nonsensical results, policy decisions based on wrong metrics.
+  best_practices: ① Always document the unit in the column name ② Normalize to a common unit ③ Verify orders of magnitude
+    ④ Cross-check against known benchmark values
+  mental_rule: Always verify the unit before comparing.
+- id: T40
+  label: Misleading Averages
+  sector: Public Data / Socio-Economic
+  criticality: Common
+  penalty: 8
+  department: PublicData
+  description: Using the mean on highly skewed distributions masks inequality and distorts reality.
+  example: National average income of $50,000/year while 80% of households earn less than $30,000.
+  consequence: Poorly targeted public policies, misleading public communication.
+  best_practices: ① Always report median AND mean together ② Visualize the full distribution (boxplot, histogram) ③ Analyze
+    by decile / quartile ④ Document the distribution shape in the report
+  mental_rule: The mean hides inequality. Always show the full distribution.
+- id: T41
+  label: Abusive Aggregations
+  sector: Public Data / Socio-Economic
+  criticality: Common
+  penalty: 8
+  department: PublicData
+  description: Aggregating data to too high a level erases local or sub-group disparities.
+  example: National employment rate of 70% masks a 30% rate in a specific region.
+  consequence: Policies blind to regional disparities, ill-adapted decisions.
+  best_practices: ① Retain the most granular data available ② Visualize geographic distributions ③ Decompose aggregates by
+    subgroup ④ Document the aggregation perimeter
+  mental_rule: The more you aggregate, the more you lose. Preserve granularity.
+- id: T42
+  label: Non-Unique Patient Identifiers
+  sector: Healthcare / Medical
+  criticality: Critical
+  penalty: 20
+  department: Healthcare
+  description: Patients have multiple identifiers across different systems (EHR, lab, pharmacy) or records were incorrectly
+    merged.
+  example: Patient John Martin = ID 1234 in the EHR and ID 5678 in the lab → two separate records.
+  consequence: Medical errors, incomplete care, diagnosis made on partial record.
+  best_practices: ① Use the national health identifier ② Fuzzy matching on name + birth date + address ③ Reconciliation process
+    at point of care ④ Regular duplicate audit
+  mental_rule: A unique patient identifier can save a life.
+- id: T43
+  label: Biological Values Outside Reference Range
+  sector: Healthcare / Medical
+  criticality: Critical
+  penalty: 20
+  department: Healthcare
+  description: Clinical values (blood glucose, blood pressure, temperature) outside physiologically possible ranges go undetected.
+  example: Blood glucose = 0 mg/dL or 9999 mg/dL → undetected entry error.
+  consequence: Incorrect clinical decisions, missed medical alerts.
+  best_practices: ① Define reference ranges per clinical parameter ② Automated out-of-range alerts ③ Verify units of measurement
+    ④ Double entry for critical parameters
+  mental_rule: In medicine, an outlier can be a life-threatening emergency.
+- id: T44
+  label: Drug Names Using Multiple Nomenclatures
+  sector: Healthcare / Medical
+  criticality: Critical
+  penalty: 20
+  department: Healthcare
+  description: The same drug can be referenced by its INN (generic name), brand name, ATC code, or generic name depending
+    on the system.
+  example: '''Tylenol'', ''Acetaminophen'', ''Paracetamol'', ''APAP'' = same molecule, 4 different names.'
+  consequence: Double prescriptions, incorrect consumption analysis, undetected drug interactions.
+  best_practices: ① Standardize on ATC code or INN ② Maintain a name correspondence dictionary ③ Input validation at point
+    of entry ④ Regular reference dictionary updates
+  mental_rule: One drug = one unique code. Always normalize.
+- id: T45
+  label: Inconsistent Diagnosis Dates
+  sector: Healthcare / Medical
+  criticality: Common
+  penalty: 8
+  department: Healthcare
+  description: Diagnosis date after the patient's death date, or before the patient's birth date.
+  example: diagnosis_date = 2019-01-01, birth_date = 2020-06-01 → diagnosed before birth.
+  consequence: Corrupted epidemiological analyses, invalid clinical studies.
+  best_practices: '① Validate: birth_date < diagnosis_date < today ② If available, validate < death_date ③ Audit all date
+    inconsistencies ④ Train data entry staff'
+  mental_rule: Medical chronology is itself a diagnostic tool.
+- id: T46
+  label: Non-Random Missing Follow-Up Data
+  sector: Healthcare / Medical
+  criticality: Common
+  penalty: 8
+  department: Healthcare
+  description: Patients who improve or who die tend to disappear from follow-up data — creating survivorship bias.
+  example: 'Clinical trial: patients with severe side effects drop out → treatment efficacy overestimated.'
+  consequence: Overestimated treatment efficacy, underestimated dangers.
+  best_practices: ① Analyze characteristics of lost patients ② Apply LOCF (Last Observation Carried Forward) imputation ③
+    Sensitivity analysis ④ Document and report the attrition rate
+  mental_rule: The patient absent from your data is not neutral for your conclusions.
+- id: T47
+  label: Incomplete or Corrupted Logs
+  sector: IT / Information Systems
+  criticality: Critical
+  penalty: 20
+  department: IT
+  description: Log files with missing, truncated, or corrupted lines due to system restarts or outages.
+  example: Security log missing 2 hours during a network outage → incident cannot be traced.
+  consequence: Impossible security audit, biased performance analysis.
+  best_practices: ① Centralize logs (ELK, Splunk) ② Monitor log completeness ③ Alert on temporal gaps ④ Redundant logging
+    architecture
+  mental_rule: A missing log = an unmonitored open door.
+- id: T48
+  label: Inconsistent Character Encodings
+  sector: IT / Information Systems
+  criticality: Critical
+  penalty: 20
+  department: IT
+  description: Files or fields in different encodings (UTF-8, Latin-1, Windows-1252) create unreadable characters and invisible
+    duplicates.
+  example: 'Customer names with accented characters corrupted after import: ''Ren\xe9'' instead of ''René''.'
+  consequence: Invisible duplicates, failed searches, broken UI display.
+  best_practices: ① Standardize on UTF-8 everywhere ② Auto-detect encoding at import (chardet library) ③ Apply Unicode normalization
+    (NFC) ④ Test special characters in all pipelines
+  mental_rule: UTF-8 everywhere. Always. No exceptions.
+- id: T49
+  label: Schema Changes Without Version Control
+  sector: IT / Information Systems
+  criticality: Critical
+  penalty: 20
+  department: IT
+  description: Database schema modifications (adding, removing, or renaming columns) with no version management break existing
+    pipelines.
+  example: Renaming 'user_id' to 'customer_id' without migration → pipeline crashes.
+  consequence: Broken pipelines, data loss, impossible analysis.
+  best_practices: ① Use migration tools (Flyway, Liquibase) ② Document interface contracts ③ Pipeline regression tests ④ Semantic
+    versioning for schemas
+  mental_rule: Every schema change = a documented, versioned migration.
+- id: T50
+  label: Test Data in Production
+  sector: IT / Information Systems
+  criticality: Common
+  penalty: 8
+  department: IT
+  description: Dummy data used during testing ends up in the production environment.
+  example: Fictional customers ('John Test', 'test@test.com') in the production CRM database.
+  consequence: Distorted KPIs, campaigns sent to invalid addresses.
+  best_practices: ① Naming convention for test data ② Automated purge before promoting to prod ③ Strict environment separation
+    ④ Detect test data patterns automatically
+  mental_rule: Test data must never cross the production boundary.
+- id: T51
+  label: Auto-Incremented IDs as Business Keys
+  sector: IT / Information Systems
+  criticality: Common
+  penalty: 8
+  department: IT
+  description: Using technical auto-incremented IDs for business joins creates fragile dependencies.
+  example: Auto-increment counter reset after a migration → ID collisions, data linked to wrong entities.
+  consequence: Incorrect joins, data associated with wrong entities.
+  best_practices: ① Use UUIDs for shared identifiers ② Document business keys vs. technical keys ③ Enforce referential integrity
+    constraints ④ Post-migration integrity tests
+  mental_rule: A technical ID is not a business key.
+- id: T52
+  label: Product Returns Incorrectly Accounted
+  sector: E-commerce / Retail
+  criticality: Critical
+  penalty: 20
+  department: EcommerceRetail
+  description: Return transactions reduce revenue but can create negative values or duplicates if coded incorrectly.
+  example: Return of $500 credited twice → revenue reduced by $1,000 instead of $500.
+  consequence: Understated revenue, incorrect margin, wrong inventory count.
+  best_practices: ① Separate transaction types (Sale / Return / Exchange) ② Order-to-return reconciliation ③ Alert if return
+    amount > original order amount ④ Monthly return transaction audit
+  mental_rule: A return is a full transaction in its own right — not just a negative sign.
+- id: T53
+  label: Inconsistent Product Prices Across Channels
+  sector: E-commerce / Retail
+  criticality: Critical
+  penalty: 20
+  department: EcommerceRetail
+  description: The same product has different prices across channels (web, app, in-store, marketplace) unintentionally.
+  example: 'SKU-12345: $29.99 on the website, $34.99 on the app, $27.99 in-store → which is the reference price?'
+  consequence: Channel profitability analysis corrupted, degraded customer experience.
+  best_practices: ① Centralized pricing master reference ② Automated cross-channel synchronization ③ Alert on price discrepancy
+    > threshold ④ Regular cross-channel price consistency audit
+  mental_rule: One price = one source of truth.
+- id: T54
+  label: Out-of-Sync Real-Time Inventory
+  sector: E-commerce / Retail
+  criticality: Critical
+  penalty: 20
+  department: EcommerceRetail
+  description: Stock displayed online does not match actual warehouse stock, causing oversells or order cancellations.
+  example: Product shows as available online but is physically out of stock → order accepted then cancelled.
+  consequence: Customer dissatisfaction, cancellation handling costs, loss of trust.
+  best_practices: ① Near-real-time synchronization (< 1 min) ② Safety buffer on displayed stock ③ Reservation management system
+    ④ Preventive stockout alerts
+  mental_rule: Displayed stock must equal real stock. Not an approximation.
+- id: T55
+  label: Cart Abandonment Rate Includes Bot Traffic
+  sector: E-commerce / Retail
+  criticality: Common
+  penalty: 8
+  department: EcommerceRetail
+  description: Including bots, internal test sessions, or scrapers in the cart abandonment rate distorts the real metric.
+  example: 20% of cart sessions are bots → true abandonment rate of 65% shown as 72%.
+  consequence: Poorly targeted CRO investments, wasted optimization budget.
+  best_practices: ① Filter known bot IPs and user agents ② Define minimum valid session duration ③ Use honeypots to detect
+    bots ④ Recalculate all KPIs after filtering
+  mental_rule: Filter bots before calculating any conversion rate.
+- id: T56
+  label: Incorrect Multi-Touch Attribution
+  sector: E-commerce / Retail
+  criticality: Common
+  penalty: 8
+  department: EcommerceRetail
+  description: A single purchase is attributed to multiple channels without a defined attribution model, inflating all channel
+    performances.
+  example: One order attributed to Google Ads, Email, AND Direct → counted 3 times in channel performance.
+  consequence: Overestimated ROAS and ROI per channel, misallocated marketing budget.
+  best_practices: ① Define and document the attribution model ② Use multi-touch attribution tools ③ Compare models (last-click,
+    first-click, linear, data-driven) ④ Define attribution windows per channel
+  mental_rule: Attribution is a business decision as much as a technical one.
+- id: T57
+  label: Hidden Default / Placeholder Values
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: Specific numeric or text values used as placeholders for missing data (0, -1, 'N/A', 'Unknown', 9999) masquerade
+    as valid data.
+  example: 'Age column: 50% of values = 99 → undocumented placeholder.'
+  consequence: Distorted statistics, biased models, wrong decisions.
+  best_practices: ① Map all placeholder values by field ② Convert to NULL/NaN ③ Document in the data dictionary ④ Automate
+    placeholder detection at import
+  mental_rule: Identify and document every placeholder value before any analysis.
+- id: T58
+  label: Logical Duplicates
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: Rows representing the same real entity but with minor differences (casing, spaces, formats) that prevent exact
+    deduplication.
+  example: '''APPLE INC'', ''Apple Inc.'', ''Apple Incorporated'' = same company. Exact dedup finds 0 duplicates. Reality:
+    3 duplicates.'
+  consequence: Incorrect counts, failed joins, distorted analyses.
+  best_practices: '① Normalize: lowercase + strip + remove punctuation ② Fuzzy matching (Levenshtein, Jaro-Winkler) ③ Clustering
+    (blocking + matching) ④ Human validation for ambiguous cases'
+  mental_rule: Deduplication = normalize first, compare second.
+- id: T59
+  label: Over-Cleaning / Data Made 'Too Clean'
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: Overly aggressive cleaning removes genuine anomalies that are important signals.
+  example: Removing all values > 3 standard deviations eliminates fraud cases, critical failures, and VIP customers.
+  consequence: Loss of critical information, models blinded to the most important edge cases.
+  best_practices: ① Audit every cleaning rule ② Keep removed data in a separate dataset ③ Quantify what is removed ④ Validate
+    all removal decisions with domain experts
+  mental_rule: Cleaning = control, document, and own your decisions. Not delete.
+- id: T60
+  label: Temporal Logic Violated
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: 'Event sequences that violate causal temporal order: end before start, creation after modification.'
+  example: updated_at < created_at. contract_end < contract_start.
+  consequence: Corrupted time-series analysis, negative duration calculations.
+  best_practices: '① Enforce: created_at ≤ updated_at ≤ deleted_at ② Causal check for all temporal fields ③ Automated temporal
+    integrity tests ④ UTC for all timestamps'
+  mental_rule: Time only moves forward. Your data should too.
+- id: T61
+  label: Business Rule Evolution Not Tracked
+  sector: Cross-Sector (All Domains)
+  criticality: Common
+  penalty: 8
+  department: CrossSector
+  description: Calculation or categorization rules change over time without restating historical data, breaking time-series
+    comparability.
+  example: 'Definition of ''active customer'' changes in 2023: purchase within 6 months → 12 months. Historical series no
+    longer comparable.'
+  consequence: Historical KPIs not comparable, invalid trend analysis.
+  best_practices: ① Version business rules with effective dates ② Recompute historical data on each rule change ③ Document
+    in the data catalog ④ Create both 'comparable' and 'absolute' indicators
+  mental_rule: Data inherits the rules of the past. Document every one of them.
+- id: T62
+  label: Uncontrolled Free-Text Fields
+  sector: Cross-Sector (All Domains)
+  criticality: Common
+  penalty: 8
+  department: CrossSector
+  description: Text fields with no controlled value list generate an explosion of variants making analysis impossible.
+  example: 'Free-text ''country'' field: ''France'', ''FRANCE'', ''FR'', ''FRA'', ''france'', ''França'' = 6 entries for 1
+    country.'
+  consequence: Impossible aggregations, incorrect segmentation.
+  best_practices: ① Implement controlled value lists ② Use standard reference systems (ISO country codes, postal codes) ③
+    NLP to normalize existing values ④ Regular audit of new values
+  mental_rule: A free-text field is an analytical time bomb.
+- id: T63
+  label: Missing Not At Random (MNAR)
+  sector: Cross-Sector (All Domains)
+  criticality: Common
+  penalty: 8
+  department: CrossSector
+  description: Missing values are correlated with the value itself or with unobserved factors, creating systematic bias.
+  example: Income values more often missing for very high earners (refusal to respond).
+  consequence: Biased analyses, incorrect conclusions about the true distribution.
+  best_practices: ① Test for MCAR/MAR/MNAR (Little's test) ② Never impute without prior analysis ③ Analyze characteristics
+    of rows with missing values ④ Explicitly report the bias in conclusions
+  mental_rule: A missing value is never innocent. Always analyze why it is missing.
+- id: T64
+  label: Name-Email Semantic Mismatch
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: "The customer name does not semantically match the email address provided.\n Example: \"Fatima Noor\" associated\
+    \ with \"kevin.smith@gmail.com\". This indicates either a data entry error, a shared email address, or a deeper customer\
+    \ identity management issue."
+  example: "Customer record: \nname = \"Fatima Noor\", email = \"kevin.smith@gmail.com\" → obvious mismatch between the name\
+    \ and the email owner."
+  consequence: Corrupted customer segmentation, failed personalization campaigns, incorrect customer identity resolution,
+    degraded customer experience.
+  best_practices: ① Implement name-email similarity check (Jaro-Winkler, Levenshtein) ② Flag mismatches for manual review
+    ③ Use email validation as primary key when name is unreliable ④ Maintain customer identity graph with trust scores
+  mental_rule: A name that doesn't match an email is a broken customer identity. Never ignore.
+- id: T65
+  label: Invalid Email Format
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: 'Email address does not follow the standard RFC 5322 format. Common issues: missing ''@'' symbol, missing top-level
+    domain (TLD), invalid characters, or completely malformed strings.'
+  example: Email values like "dana.lee@email" (missing .com/.fr TLD), "invalid-email" (no '@' at all), or "user@domain.c"
+    (TLD too short).
+  consequence: Failed email communications, undeliverable campaigns, invalid customer contact data, incorrect deduplication
+    logic, compliance risk for mandatory contact fields.
+  best_practices: '① Validate email format using regex at point of entry ② Use email validation libraries (email-validator,
+    py3-validate-email) ③ Flag invalid emails as ''INVALID_CONTACT'' ④ Separate business rule: require valid email for certain
+    customer segments'
+  mental_rule: An invalid email = a broken communication channel. Validate before you store.
+- id: T66
+  label: Type Mismatch – Numeric in Text Field
+  sector: Cross-Sector (All Domains)
+  criticality: Common
+  penalty: 8
+  department: CrossSector
+  description: A numeric value (integer or decimal) appears in a column that is semantically expected to contain text or categorical
+    values. This often indicates a data type misclassification or a coding error in the source system.
+  example: Column discount_applied expected values 'Yes'/'No' but contains '1' or '0' as numeric values. Column gender expected
+    'Male'/'Female' but contains '1'/'2'.
+  consequence: Failed aggregations, incorrect filters, type conversion errors in downstream systems, biased categorical analysis.
+  best_practices: ① Detect numeric values in text columns automatically ② Convert to standard categorical representation (0→'No',
+    1→'Yes') ③ Document all numeric-to-category mappings ④ Enforce schema validation at import
+  mental_rule: A number in a text field is a code without a dictionary. Map it or flag it.
+- id: T67
+  label: Type Mismatch Inverse – Text in Numeric Field
+  sector: Cross-Sector (All Domains)
+  criticality: Critical
+  penalty: 20
+  department: CrossSector
+  description: A non-numeric value (text, alphanumeric string, or special characters) appears in a column that is semantically
+    expected to contain only numeric values (e.g., revenue, amount, quantity, age). This is a severe data quality violation
+    that breaks all downstream calculations.
+  example: Column Revenue expected to contain monetary amounts contains 'TTT', '6372HN', or 'N/A'. Column age contains 'unknown'
+    or 'old'.
+  consequence: Calculation errors, corrupted aggregations, failed mathematical operations, complete loss of trust in the column's
+    data.
+  best_practices: ① Validate numeric columns for non-numeric values at import ② Separate technical IDs from business metrics
+    ③ Convert placeholder text to NULL/NaN ④ Alert immediately when non-numeric values are detected in numeric columns
+  mental_rule: A letter in a number field is a red flag. Investigate before any calculation.
+- id: T68
+  label: Semantic Inconsistency – Country/Currency Mismatch
+  sector: Finance / Accounting / Billing
+  criticality: Critical
+  penalty: 20
+  department: Finance
+  description: The country code and currency code are not semantically aligned. For example, a transaction with country='USA'
+    and currency='MAD' (Moroccan Dirham) is logically impossible under normal business rules. This indicates either a data
+    entry error, a system integration issue, or a missing currency conversion layer.
+  example: 'Row: country = ''USA'', currency = ''MAD'' → USA does not use Moroccan Dirham. Row: country = ''UK'', currency
+    = ''USD'' → expected ''GBP''.'
+  consequence: Incorrect financial aggregations, undetected foreign exchange errors, impossible multi-currency reporting,
+    audit failures.
+  best_practices: '① Build a country-currency reference table (ISO 3166 ↔ ISO 4217) ② Validate each row: currency must be
+    valid for country ③ Alert on any mismatch ④ For multi-currency businesses, require explicit currency field and conversion
+    rate'
+  mental_rule: A country without its official currency is a financial contradiction. Validate every pair.
+- id: T69
+  label: Statistical Outlier Detection
+  sector: Cross-Sector (All Domains)
+  criticality: Common
+  penalty: 8
+  department: CrossSector
+  description: A numeric value that is statistically distant from the rest of the distribution (e.g., beyond 3 standard deviations
+    from the mean, or outside the interquartile range by a factor of 3). This may represent a genuine extreme case, a data
+    entry error, or a placeholder value.
+  example: order_amount = 300,000 USD while 95% of orders are between 10 and 500 USD. Age = 150 years while the valid range
+    is 18-100.
+  consequence: Skewed averages, biased statistical models, false conclusions about typical behavior, missed signals (fraud,
+    VIP customers, errors).
+  best_practices: ① Detect outliers using IQR (Q1-3×IQR, Q3+3×IQR) or Z-score (>3) ② Do NOT auto-delete — flag for review
+    ③ Analyze business context before any removal ④ Keep outliers in a separate dataset for audit ⑤ Document every outlier
+    removal decision
+  mental_rule: An outlier is either an error, a fraud, or your best customer. Investigate before you delete.
+temporal_traps:
+- id: T70
+  label: MDY vs. DMY Ambiguous Format
+  sector: Temporal
+  category: Format & Parsing
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: 'When a date string like 04/05/2024 has no locale or format metadata, systems disagree: US locale parses it
+    as April 5; EU locale parses it as May 4. The ambiguity is silent — no parse error is raised.'
+  example: 'Raw: 04/05/2024
+
+    US parse: 2024-04-05 (Apr 5)
+
+    EU parse: 2024-05-04 (May 4)'
+  consequence: Monthly revenue aggregations shifted by one month. Cross-system joins produce phantom mismatches. Customer
+    birth dates off by months — KYC/regulatory failures.
+  best_practices: '① Enforce ISO 8601 (YYYY-MM-DD) at ingestion layer.
+
+    ② Python: pd.to_datetime(col, dayfirst=True/False) with explicit flag.
+
+    ③ SQL: STR_TO_DATE(''04/05/2024'',''%m/%d/%Y'') with documented format.
+
+    ④ Add contract check: if day > 12, format is unambiguously DMY.'
+  mental_rule: If day and month can swap, they will swap. Never trust a slash-separated date without a signed format contract.
+- id: T71
+  label: Excel Date Serial Offset
+  sector: Temporal
+  category: Format & Parsing
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: Excel stores dates as integers counting days since 1899-12-30 (including a phantom Feb 29, 1900 bug inherited
+    from Lotus 123). When numeric cells are exported to CSV without conversion, downstream systems receive raw serials like
+    45123.
+  example: 'Raw CSV export: 45123
+
+    Expected: 2023-07-19'
+  consequence: Date columns cast to integer; all date-based aggregations fail or produce years like 2123. BI tools display
+    numeric IDs on the time axis.
+  best_practices: '① Python: pd.Timestamp(''1899-12-30'') + pd.to_timedelta(45123, unit=''D'')
+
+    ② Detect serials: flag integers in [1, 2958465] range in date columns.
+
+    ③ Configure Excel exports to use ISO text format before sharing.
+
+    ④ Power BI: use Date.FromOADate([Col]) in Power Query.'
+  mental_rule: A 5-digit integer in a date column is almost always an Excel serial. Add the epoch, not your confusion.
+- id: T72
+  label: Unix Epoch Sentinel Values
+  sector: Temporal
+  category: Format & Parsing
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: 1970-01-01 00:00:00 UTC (Unix timestamp 0) is the C/POSIX epoch. Systems that fail to initialize a timestamp
+    field default to 0, which converts to this date — making it look like a real event date rather than a NULL.
+  example: 'Raw: 0 or 1970-01-01
+
+    Expected: NULL (no date recorded)'
+  consequence: Customer acquisition dates appear as 1970-01-01 — cohort analyses, customer lifetime value, and churn models
+    corrupted with phantom 54-year-old customers.
+  best_practices: '① Python: df[''date''].replace(pd.Timestamp(''1970-01-01''), pd.NaT)
+
+    ② SQL: NULLIF(date_col, ''1970-01-01'')
+
+    ③ Add a validation rule: flag any date before 1970-01-02 in operational data.
+
+    ④ Review source system initialization logic.'
+  mental_rule: 1970-01-01 in business data = system default, not history. Always treat the epoch as a suspect NULL.
+- id: T73
+  label: MySQL Zero-Date Placeholder
+  sector: Temporal
+  category: Format & Parsing
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: MySQL historically allowed 0000-00-00 as a 'zero date' placeholder for unknown dates (when NO_ZERO_DATE mode
+    is off). This is not a valid Gregorian date and causes exceptions when migrated to stricter systems.
+  example: 'Raw MySQL: 0000-00-00
+
+    Expected: NULL'
+  consequence: Migration to PostgreSQL or BigQuery fails with parse errors. Pandas raises OutOfBoundsDatetime. If coerced,
+    produces NaT silently — data loss without warning.
+  best_practices: '① MySQL: enable SET sql_mode=''NO_ZERO_DATE'' at source.
+
+    ② Python: pd.to_datetime(col, errors=''coerce'') then audit NaT count.
+
+    ③ SQL: CASE WHEN date_col = ''0000-00-00'' THEN NULL ELSE date_col END
+
+    ④ Add row-count reconciliation before and after coercion.'
+  mental_rule: Zero-zero-zero is not a date — it is a silent scream for NULL. Replace it before it crashes your pipeline downstream.
+- id: T74
+  label: ISO 8601 Non-Compliance (Week / Ordinal)
+  sector: Temporal
+  category: Format & Parsing
+  criticality: Medium
+  penalty: 7
+  department: Temporal
+  description: ISO 8601 permits week-based (2024-W03-2) and ordinal (2024-019) date representations. Most parsers default
+    to calendar format and silently misparse or reject these strings. Week 01 of a year can start in December of the prior
+    year.
+  example: 'Raw: 2023-W52-1
+
+    Expected: 2024-01-01 (Monday) — falls in 2024!'
+  consequence: Week-based year (ISO week year) differs from calendar year at year boundaries — records for ISO W52/W53 of
+    one year may actually belong to the next calendar year, splitting reporting windows incorrectly.
+  best_practices: '① Python: datetime.strptime(''2023-W52-1'', ''%G-W%V-%u'') — use %G/%V, not %Y/%W.
+
+    ② Distinguish ISO week year (%G) from calendar year (%Y) in all format strings.
+
+    ③ Document whether weekly data uses ISO or epidemiological weeks.'
+  mental_rule: ISO week year is not calendar year. W52 of year X may live in year X+1. Always parse weeks with %G, never %Y.
+- id: T75
+  label: Two-Digit Year Ambiguity (Y2K Legacy)
+  sector: Temporal
+  category: Format & Parsing
+  criticality: Medium
+  penalty: 7
+  department: Temporal
+  description: 'Legacy systems or exports may produce two-digit years (24 for 2024 or, ambiguously, 1924). Parsing libraries
+    apply a pivot year rule (commonly: <68 → 2000s, ≥68 → 1900s), which varies by platform.'
+  example: 'Raw: 01/03/68
+
+    Python strptime: 1968-01-03
+
+    Excel: 2068-01-03'
+  consequence: Date-of-birth fields produce customers aged 56 or -44. Contract expiry calculations off by 100 years. Age-gating
+    logic fails.
+  best_practices: '① Always expand to 4-digit years at source ingestion.
+
+    ② Python: apply explicit pivot: year = 2000+y if y < 30 else 1900+y
+
+    ③ SQL: CASE WHEN yr < 30 THEN 2000+yr ELSE 1900+yr END
+
+    ④ Validate plausibility range (e.g., birth year between 1900 and current year).'
+  mental_rule: Two-digit years are a Y2K landmine still ticking. Expand to 4 digits immediately or document the pivot rule
+    explicitly.
+- id: T76
+  label: Timezone-Naive Timestamp Storage
+  sector: Temporal
+  category: Format & Parsing
+  criticality: Medium
+  penalty: 7
+  department: Temporal
+  description: 'Timestamps stored without timezone information are naive: their meaning depends entirely on the reader''s
+    assumed locale. UTC vs. local time differences (up to ±14 hours) can shift a timestamp into a completely different calendar
+    date.'
+  example: 'Stored (naive): 2024-03-15 23:30:00
+
+    UTC+1 reader: 2024-03-15
+
+    UTC+5 reader: 2024-03-16 (next day!)'
+  consequence: Daily sales counts differ by 1 day between regions. Overnight transactions appear on wrong dates in settlement
+    reports. SLA breach calculations shift by hours.
+  best_practices: '① Store all timestamps in UTC; apply timezone at display layer only.
+
+    ② Python: df[''ts''].dt.tz_localize(''UTC'').dt.tz_convert(''Europe/Paris'')
+
+    ③ SQL: use TIMESTAMP WITH TIME ZONE type, not TIMESTAMP.
+
+    ④ Document reference timezone in data contracts.'
+  mental_rule: Store UTC, display local. A timezone-naive timestamp is a timestamp without a country — meaningless across
+    systems.
+- id: T77
+  label: DST Clock-Change Hour Duplication & Gap
+  sector: Temporal
+  category: Format & Parsing
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: Daylight Saving Time creates a 23-hour day (spring forward) and a 25-hour day (fall back). On fall-back night,
+    the local clock runs 01:30 twice. On spring-forward, 02:00–02:59 never exists. Systems logging in local time either double-count
+    or lose 1 hour of events.
+  example: 'Fall-back log: 01:45 CEST and 01:45 CET (same string)
+
+    UTC equivalent: 23:45 UTC (Oct 26) and 00:45 UTC (Oct 27)'
+  consequence: Hourly event counts show 2× spike at the fall-back hour and a 0-count gap at the spring-forward hour. Anomaly
+    detectors fire false alerts. Billing systems charge twice or miss one hour entirely.
+  best_practices: '① Log all events in UTC at source; convert to local only for display.
+
+    ② Python: use pytz or zoneinfo with is_dst=False disambiguation.
+
+    ③ SQL: store TIMESTAMPTZ and convert on SELECT.
+
+    ④ Document 23/25-hour days in SLA contracts.'
+  mental_rule: 'DST is a time thief that also hoards: it steals one hour in spring and gives two in fall. Only UTC tells the
+    truth.'
+- id: T78
+  label: Leap Year February 29 Handling
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: Leap years add February 29 every 4 years (except century years not divisible by 400). Systems that hardcode
+    '365 days/year' or subtract 365 days from a date to get 'last year' produce Feb 28 instead of Feb 29 in leap years — or
+    crash when Feb 29 of a non-leap year is generated.
+  example: 'Code: 2024-02-29 - 365 days
+
+    Result (wrong): 2023-03-01 — skipped Feb!
+
+    Expected: 2023-02-28'
+  consequence: YoY comparison windows are off by 1–2 days. Subscription renewal calculations land on March 1 instead of February
+    28. ML date-diff features contain off-by-one errors in 25% of years.
+  best_practices: '① Python: use relativedelta(years=1) from dateutil — never timedelta(365) for year arithmetic.
+
+    ② SQL: ADD_MONTHS(date_col, 12) respects month-end logic.
+
+    ③ Validate: assert pd.Timestamp(''2024-02-29'').year == 2024 in CI tests.
+
+    ④ Build a ''Feb 29 test suite'' in your data quality framework.'
+  mental_rule: Never add 365 days to mean 'one year later.' Use calendar-aware arithmetic — February 29 exists only once every
+    4 years.
+- id: T79
+  label: End Date Before Start Date (Temporal Inversion)
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: 'An event record where end_date < start_date is logically impossible but syntactically valid. Common causes:
+    data entry errors, copy-paste reversals, ETL transformations that swap columns, or systems that store relative values
+    (duration) in absolute-looking fields.'
+  example: 'Raw: start 2024-06-15, end 2024-06-01
+
+    Expected: flagged as invalid'
+  consequence: Negative durations in SLA reports. Projects appear complete before they start. Survival analysis and time-to-event
+    models produce negative event times — model training corrupted.
+  best_practices: '① Python: assert (df[''end''] >= df[''start'']).all() — raise on violation.
+
+    ② SQL: CHECK (end_date >= start_date) constraint at table creation.
+
+    ③ Add pipeline step: df[df[''end''] < df[''start'']] → quarantine table.
+
+    ④ Never silently swap: flag for human review, not auto-correction.'
+  mental_rule: Duration is always non-negative. If end precedes start, the data is wrong — not the calendar. Quarantine, don't
+    correct silently.
+- id: T80
+  label: Future-Dated Records in Historical Datasets
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: Records timestamped in the future relative to the pipeline's execution date indicate data entry errors, system
+    clock drift, or pre-scheduled events incorrectly placed in transactional tables. When training ML models, future dates
+    leak information into the past.
+  example: 'Today: 2026-04-15
+
+    transaction_date: 2027-03-01
+
+    Expected: quarantined or re-dated pending review'
+  consequence: Forecasting models train on 'future' actuals, causing data leakage. Dashboard KPIs inflated by bookings that
+    have not materialized. Cohort analyses polluted with future events.
+  best_practices: '① Python: df[df[''date''] > pd.Timestamp.today()].pipe(quarantine)
+
+    ② SQL: WHERE transaction_date <= CURRENT_DATE in base view.
+
+    ③ Add pipeline metadata: record max(date) and alert if > execution date.
+
+    ④ Separate pre-scheduled/future events into a distinct table.'
+  mental_rule: A date in the future is a prediction, not a fact. Keep actuals and forecasts in separate tables — always.
+- id: T81
+  label: Impossible Calendar Dates
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: Dates like February 30, April 31, or November 31 do not exist in the Gregorian calendar. They may appear in
+    manual CSV exports where day/month are stored as separate integers, poorly validated web forms, or legacy systems.
+  example: 'Raw: 2024-02-30 or 2024-04-31
+
+    Python errors=''coerce'': NaT — silently dropped'
+  consequence: Silent NaT values inflate missing-date statistics. Aggregations by month under-count records. If auto-rolled
+    (Feb 30 → Mar 1), records are misassigned to a different month.
+  best_practices: '① Python: validate with pd.to_datetime(col, errors=''raise'') in testing; errors=''coerce'' in production
+    with mandatory NaT count alert.
+
+    ② SQL: TRY_CAST(date_col AS DATE) to detect invalids.
+
+    ③ Add check: df[''day''] <= df[''month''].map(days_in_month_dict)'
+  mental_rule: Feb 30 is not a rounding error — it is a data error. Reject it loudly; never silently roll it into March.
+- id: T82
+  label: Late-Arriving Data / Backdated Records
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: Medium
+  penalty: 7
+  department: Temporal
+  description: Transactions recorded with an event date significantly earlier than their ingestion date indicate late-arriving
+    data. In streaming architectures, event-time vs. processing-time confusion causes aggregations to miss records already
+    committed to closed windows.
+  example: 'event_date: 2026-03-01, loaded: 2026-04-14
+
+    Issue: March 2026 report was already published — this sale is missing from it'
+  consequence: Closed reporting periods permanently incorrect. Cumulative metrics diverge between real-time dashboards and
+    official batch reports. Regulatory filings require costly restatements.
+  best_practices: '① Store both event_date and load_date columns.
+
+    ② Use event-time windowing (e.g., Apache Flink watermarks or dbt snapshots).
+
+    ③ Implement a late-arrival SLA: alert if load_date - event_date > N days.
+
+    ④ Mark closed periods as immutable; republish with versioning if restatement needed.'
+  mental_rule: Always store WHEN it happened AND when you learned about it. Event time and ingestion time are two different
+    truths.
+- id: T83
+  label: Accounting Date vs. Transaction Date Mismatch
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: The date a transaction physically occurs (transaction date) differs from the date it is posted to the ledger
+    (accounting date). This gap can span financial period closures. A transaction on Dec 31 posted on Jan 2 shifts revenue
+    into the wrong fiscal year.
+  example: 'Sale made on 31/12 but posted on 02/01
+
+    → revenue attributed to the wrong fiscal year'
+  consequence: Period-end reporting errors, non-compliance with IFRS/GAAP standards. Revenue shifted across fiscal years.
+    Audit failures when actuals don't match booking records.
+  best_practices: '① Store both dates in the database — never only one.
+
+    ② Build separate views/reports by date type (transaction vs. accounting).
+
+    ③ Alert if gap between dates exceeds N days.
+
+    ④ Document the posting rule clearly in the data dictionary.'
+  mental_rule: Always store the transaction date AND the accounting date as separate fields. They are two different business
+    facts.
+- id: T84
+  label: Impossible Logistics Dates
+  sector: Temporal
+  category: Logical & Chronological
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: Delivery date earlier than order date, or shipment date after receipt date — violations of causal temporal
+    logic that indicate data entry errors, timezone offsets not handled, or data from unsynchronized systems.
+  example: 'delivery_date: 2024-01-05
+
+    order_date: 2024-01-10
+
+    → delivered before it was ordered'
+  consequence: Lead time analysis impossible, false-positive delay alerts, SLA calculations corrupted. Supply chain optimization
+    driven by logically impossible data.
+  best_practices: '① Enforce: delivery_date ≥ order_date ≥ creation_date.
+
+    ② Store all timestamps in UTC.
+
+    ③ Temporal consistency check at import.
+
+    ④ Log all anomalies in a quarantine table for review.'
+  mental_rule: Causal and temporal logic is non-negotiable. Delivery cannot precede order. Flag immediately.
+- id: T85
+  label: Fiscal Year vs. Calendar Year Offset
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: Many companies use a fiscal year that does not align with January–December. A retail company with a February–January
+    fiscal year means FY2025 Q1 starts February 2025, not January. Mixing fiscal and calendar year labels silently conflates
+    two different 12-month windows.
+  example: 'Label: FY2025
+
+    Calendar assumption: Jan 2025 – Dec 2025
+
+    Actual (Feb-start FY): Feb 2025 – Jan 2026'
+  consequence: YoY growth calculations off by one or more months. Board-level financial reports misstate period coverage.
+    Cross-company benchmarking compares misaligned periods.
+  best_practices: '① Maintain a dim_fiscal_calendar table mapping every calendar date to its fiscal year, quarter, and period.
+
+    ② Python: use pd.tseries.offsets.FY5253 or custom BMonthEnd offset.
+
+    ③ Always document fiscal year start month in data dictionaries.
+
+    ④ Never store bare ''FY'' labels without a start-date reference.'
+  mental_rule: 'FY is not CY. Always ask: when does the fiscal year START? Document it. Encode it. Never assume January.'
+- id: T86
+  label: Inconsistent Granularity in Date Column
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: 'A single date column contains mixed-precision values: some rows are daily (2024-03-15), others are monthly
+    (2024-03 or 2024-03-01), and others are quarterly (Q1 2024). All look like dates but represent incompatible aggregation
+    levels.'
+  example: 'Raw mix: 2024-03-15 / 2024-03 / Q1 2024
+
+    Expected: Separate columns — date, month, quarter'
+  consequence: Grouping by date produces nonsensical aggregations. Charts show flat lines interrupted by spikes. ML models
+    learn noise as signal.
+  best_practices: '① Profile the column: df[''date''].str.len().value_counts() reveals mixed lengths.
+
+    ② Add a ''granularity'' column: ''D'', ''M'', ''Q'' per row.
+
+    ③ Separate into typed sub-tables; never mix granularities in one column.
+
+    ④ Power BI: use Text.Length([DateCol]) in a calculated column.'
+  mental_rule: One column, one grain. Mixing daily and monthly in the same date column is like mixing meters and miles — the
+    math breaks silently.
+- id: T87
+  label: Periodicity Drift (5-Week Month)
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: When 'monthly' data is computed from calendar weeks, some months contain 4 weeks and others contain 5 (the
+    4-4-5 or 4-5-4 retail calendar). Treating these as equivalent months in trend analysis produces artificial spikes every
+    5th month.
+  example: 'Mar 2024 = 5 weeks; Feb 2024 = 4 weeks
+
+    MoM result: March artificially +25% vs. February with zero real growth'
+  consequence: Monthly trend dashboards show a recurring 25% 'growth' spike in 5-week months. Marketing adjusts budget based
+    on fake seasonality. Forecasting models overfit to artificial periodicity.
+  best_practices: '① Always store the number of trading days or weeks per period in dim_calendar.
+
+    ② Normalize: kpi / num_days before MoM comparison.
+
+    ③ Use a 4-4-5 calendar table for retail: document which months have 5 weeks.
+
+    ④ Flag 5-week months in dashboards with an annotation layer.'
+  mental_rule: Not all months are created equal. Normalize by trading days before comparing month-over-month — or you're comparing
+    apples and baskets.
+- id: T88
+  label: Reporting Period End-Date Labeling Convention
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: High
+  penalty: 12
+  department: Temporal
+  description: Some sources label a monthly period by its first day (2024-03-01 = all of March), others by its last day (2024-03-31).
+    Joining two datasets with opposite conventions shifts one dataset by an entire month in trend charts.
+  example: 'Source A (start-labeled): period 2024-03-01
+
+    Source B (end-labeled): period 2024-03-31
+
+    Join result: March from A joins April from B — 1-month shift!'
+  consequence: KPI trends appear shifted by a full month. YoY analysis double-counts one month and misses another. Finance
+    and operations dashboards disagree permanently.
+  best_practices: '① Define a standard: always use period start date (ISO convention) in canonical tables.
+
+    ② Python: normalize end-labeled dates: period_start = period_end - pd.offsets.MonthBegin(1)
+
+    ③ Document label convention in every data source''s README/contract.
+
+    ④ Add a canonical period_id column (YYYYMM integer) to avoid join ambiguity.'
+  mental_rule: March 1 and March 31 can both mean 'all of March' — document which convention each source uses before any join.
+- id: T89
+  label: Holiday Calendar & Business Day Miscounting
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: Medium
+  penalty: 7
+  department: Temporal
+  description: SLA durations, payment due-dates, and processing times are often measured in business days. Using calendar-day
+    arithmetic ignores weekends and public holidays, producing systematically early deadline calculations — especially around
+    Easter, Christmas, or national holidays that vary by country.
+  example: 'Calendar calc: Invoice date 2024-12-20 + 5 days = 2024-12-25 (Christmas Day!)
+
+    Business day calc: 2025-01-02 (first business day after holidays)'
+  consequence: Payment due dates fall on holidays — auto-debit failures. SLA breach reporting inaccurate. Contract penalties
+    calculated on wrong day counts.
+  best_practices: '① Python: from pandas.tseries.holiday import USFederalHolidayCalendar and CustomBusinessDay.
+
+    ② Maintain a dim_holiday table per country/region.
+
+    ③ SQL: join against holiday table: WHERE date_col NOT IN (SELECT holiday_date FROM dim_holiday WHERE country=''FR'')
+
+    ④ Parameterize by jurisdiction — payment calendars differ by country.'
+  mental_rule: A calendar has 365 days; a business calendar has ~250. Never confuse the two when calculating contractual deadlines.
+- id: T90
+  label: Snapshot vs. Event Timestamp Confusion
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: A snapshot date represents the state AS OF that date (e.g., balance on Dec 31), while an event timestamp marks
+    WHEN something occurred (e.g., a payment at 14:32). Treating a snapshot date as an event timestamp produces incorrect
+    point-in-time analysis and SCD-type joins that return the wrong version of a dimension.
+  example: 'Snapshot field: balance_date 2024-12-31 (balance AS OF this date)
+
+    Misread as event: A payment was made ON Dec 31 — wrong!'
+  consequence: SCD Type 2 lookups join snapshot dates to event timestamps — retrieving the wrong dimension version. Balance
+    sheet queries return end-of-period balances instead of transaction-level detail.
+  best_practices: '① Use clear column naming: as_of_date / snapshot_date vs. event_ts / transaction_date.
+
+    ② Never join snapshot and event columns directly on equality — use range joins: event_ts BETWEEN effective_from AND effective_to.
+
+    ③ Document in data catalog whether each date column is a snapshot or event anchor.'
+  mental_rule: AS-OF date and ON date are not the same. A snapshot freezes history; an event creates it. Label every date
+    column as one or the other.
+- id: T91
+  label: Aggregation Cutoff & Partial Period Bias
+  sector: Temporal
+  category: Business & Periodicity
+  criticality: Critical
+  penalty: 20
+  department: Temporal
+  description: When a reporting period is still in progress (e.g., current month is April 15 and April is not yet over), including
+    partial-period data in trend comparisons produces misleading YoY or MoM figures. April appears lower than complete months
+    — misread as decline, not incompleteness.
+  example: 'Dashboard today (Apr 15)
+
+    April revenue: $500k (15 days only)
+
+    vs. March: $1.1M → ''April -55%''
+
+    Reality: Partial month — no meaningful comparison possible yet'
+  consequence: Management interprets incomplete month as a performance crisis. ML models trained on partial-period data learn
+    systematically low values for the last observable period. Forecasting models over-correct.
+  best_practices: '① Tag partial periods: is_complete_period BOOLEAN in dim_calendar.
+
+    ② Python: df[df[''period_end''] <= pd.Timestamp.today()] — exclude incomplete periods.
+
+    ③ SQL: WHERE period_end <= DATE_TRUNC(''month'', CURRENT_DATE) - INTERVAL ''1 day''
+
+    ④ Add a visual annotation on dashboards for the current in-progress period.'
+  mental_rule: Never compare a partial month to a full month. Mark in-progress periods as incomplete and exclude them from
+    YoY trend lines.

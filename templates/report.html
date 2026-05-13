@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="ltr">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{{ t.report_title }} — AnalytiQ Pro</title>
+    <style>
+        {{ css_content | safe }}
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 1 — HEADER
+     ══════════════════════════════════════════════════════ -->
+<div class="header">
+    <div class="header-left">
+        <!-- Logo SVG isolé du RTL — règle obligatoire -->
+        <div dir="ltr" class="logo">
+            <svg width="140" height="45" xmlns="http://www.w3.org/2000/svg">
+                <rect width="140" height="45" fill="#1a5276" rx="4"/>
+                <text x="70" y="28" font-family="Arial, sans-serif"
+                      font-size="16" fill="white"
+                      text-anchor="middle" font-weight="bold">
+                    AnalytiQ Pro&#8482;
+                </text>
+            </svg>
+        </div>
+        <p class="report-title">{{ t.report_title }}</p>
+        <p class="report-subtitle">
+            {{ total_rows }} {{ t.dataset_info.split('·')[0].strip() }}
+            &nbsp;·&nbsp;
+            {{ total_columns }} {{ t.dataset_info.split('·')[1].strip() if '·' in t.dataset_info else '' }}
+        </p>
+    </div>
+    <div class="header-right">
+        <p>{{ t.generated_on }}</p>
+        <p><strong>{{ timestamp_fmt }}</strong></p>
+        <p style="margin-top:6px; font-size:8pt;">analytiq-pro.com</p>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 2 — SCORE ACI PRINCIPAL
+     ══════════════════════════════════════════════════════ -->
+<h2>{{ t.aci_title }}</h2>
+
+<div class="aci-main-block">
+    <div class="aci-score">{{ aci_score }}</div>
+    <div class="aci-score-label">/ 100</div>
+
+    <!-- Barre de progression CSS — pas de conic-gradient (WeasyPrint) -->
+    <div class="progress-container">
+        <div class="progress-bar progress-{{ aci_band_lower }}"
+             style="width: {{ aci_score_pct }}%;"></div>
+    </div>
+
+    <span class="aci-band band-{{ aci_band_lower }}">{{ aci_band }}</span>
+
+    <p class="interpretation">{{ interpretation }}</p>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 3 — COMPOSANTES ACI
+     ══════════════════════════════════════════════════════ -->
+<h2>{{ t.components_title }}</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>{{ t.col_label }}</th>
+            <th class="center">{{ t.score_label }}</th>
+            <th class="center">{{ t.col_weight }}</th>
+            <th class="right">{{ t.col_contribution }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>TCS</strong> — Temporal Confidence Score</td>
+            <td class="center">{{ tcs_score }} / 100</td>
+            <td class="center">35 %</td>
+            <td class="right">{{ tcs_weighted }}</td>
+        </tr>
+        <tr>
+            <td><strong>DQS Finance</strong> — Data Quality Score Finance</td>
+            <td class="center">{{ dqs_score }} / 100</td>
+            <td class="center">30 %</td>
+            <td class="right">{{ dqs_weighted }}</td>
+        </tr>
+        <tr>
+            <td><strong>AMS</strong> — Analytical Maturity Score</td>
+            <td class="center">{{ ams_score }} / 100</td>
+            <td class="center">25 %</td>
+            <td class="right">{{ ams_weighted }}</td>
+        </tr>
+        <tr>
+            <td><strong>EXS</strong> — Expert Score</td>
+            <td class="center">{{ exs_score }} / 100</td>
+            <td class="center">10 %</td>
+            <td class="right">{{ exs_weighted }}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 4 — RECOMMANDATIONS PRIORITAIRES
+     ══════════════════════════════════════════════════════ -->
+<h2>{{ t.recommendations_title }}</h2>
+
+<ul class="recommendations-list">
+    {% for rec in recommendations %}
+    <li>{{ rec }}</li>
+    {% endfor %}
+</ul>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 5 — TRAPS FINANCE DÉCLENCHÉS
+     ══════════════════════════════════════════════════════ -->
+<h2>{{ t.finance_traps_title }}</h2>
+
+{% if finance_traps %}
+<table>
+    <thead>
+        <tr>
+            <th>{{ t.col_id }}</th>
+            <th>{{ t.col_label }}</th>
+            <th class="center">{{ t.col_occurrences }}</th>
+            <th>{{ t.col_columns }}</th>
+            <th class="center">{{ t.col_severity }}</th>
+            <th class="center">{{ t.col_penalty }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trap in finance_traps %}
+        <tr>
+            <td><strong>{{ trap.id }}</strong></td>
+            <td>{{ trap.label }}</td>
+            <td class="center">{{ trap.occurrences }}</td>
+            <td style="font-size:9pt;">{{ trap.flagged_cols_fmt }}</td>
+            <td class="center">
+                {% if trap.criticality == "Critical" %}
+                <span class="severity-critical">Critical</span>
+                {% else %}
+                <span class="severity-common">{{ trap.criticality }}</span>
+                {% endif %}
+            </td>
+            <td class="center">{{ trap.penalty }} pts</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty-notice">{{ t.no_finance_trap }}</p>
+{% endif %}
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 6 — TRAPS TEMPORELS DÉCLENCHÉS
+     ══════════════════════════════════════════════════════ -->
+<h2>{{ t.temporal_traps_title }}</h2>
+
+{% if temporal_traps %}
+<table>
+    <thead>
+        <tr>
+            <th>{{ t.col_id }}</th>
+            <th>{{ t.col_label }}</th>
+            <th class="center">{{ t.col_occurrences }}</th>
+            <th class="center">{{ t.col_penalty }}</th>
+            <th>Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trap in temporal_traps %}
+        <tr>
+            <td><strong>{{ trap.id }}</strong></td>
+            <td>{{ trap.label }}</td>
+            <td class="center">{{ trap.occurrences }}</td>
+            <td class="center">{{ trap.penalty }} pts</td>
+            <td style="font-size:9pt; font-style:italic; color:#6c757d;">
+                {{ trap.note if trap.note else "—" }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if tcs_flags.t70_doubled or tcs_flags.t89_extra or tcs_flags.t91_cap_applied %}
+<div class="dedup-box" style="background-color:#e8f5e9; border-left-color:#2e7d32;">
+    <strong>{{ t.tcs_rules_applied }} :</strong>
+    {% if tcs_flags.t70_doubled %}
+    &nbsp;T70 ({{ "penalty doubled — financial column" if lang == "en" else "pénalité doublée — colonne financière" }})&nbsp;
+    {% endif %}
+    {% if tcs_flags.t89_extra %}
+    &nbsp;T89 ({{ "additional −5 pts" if lang == "en" else "pénalité additionnelle −5 pts" }})&nbsp;
+    {% endif %}
+    {% if tcs_flags.t91_cap_applied %}
+    &nbsp;T91 ({{ "TCS capped at 30 pts" if lang == "en" else "TCS plafonné à 30 pts" }})&nbsp;
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<p class="empty-notice">{{ t.no_temporal_trap }}</p>
+{% endif %}
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 7 — AMS CHECKLIST (8 items)
+     ══════════════════════════════════════════════════════ -->
+<h2>{{ t.ams_title }}</h2>
+
+{% if ams_checklist %}
+<table>
+    <thead>
+        <tr>
+            <th class="center" style="width:5%;">{{ t.col_status }}</th>
+            <th style="width:30%;">{{ t.col_item }}</th>
+            <th>{{ t.col_reason }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in ams_checklist %}
+        <tr>
+            <td class="center">
+                {% if item.passed %}
+                <span class="check-pass">✓</span>
+                {% else %}
+                <span class="check-fail">✗</span>
+                {% endif %}
+            </td>
+            <td><strong>{{ item.item }}</strong></td>
+            <td style="font-size:9.5pt;">{{ item.reason }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="ams-score-summary">
+    AMS : {{ ams_passed }} / {{ ams_total }} {{ t.ams_summary.split('—')[0].strip() }}
+    &nbsp;—&nbsp;
+    {{ t.score_label }} : {{ ams_score }} / 100
+</div>
+{% else %}
+<p class="empty-notice">AMS {{ "checklist not available" if lang == "en" else "checklist non disponible" }}.</p>
+{% endif %}
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 8 — DÉDUPLICATION (conditionnelle)
+     Visible UNIQUEMENT si deduplication_applied == True
+     ══════════════════════════════════════════════════════ -->
+{% if dedup_applied %}
+<h2>{{ t.dedup_title }}</h2>
+
+{% for detail in dedup_details %}
+<div class="dedup-box">
+    <strong>{{ t.dedup_removed }} :</strong>
+    {{ detail.removed_trap }}
+    &nbsp;—&nbsp;
+    {{ detail.because }}
+    {% if detail.conflicts_found %}
+    ({{ detail.conflicts_found | join(", ") }})
+    {% endif %}
+    <br/>
+    <span style="font-size:9pt; color:#6c757d;">
+        {{ t.dedup_original_dqs }} : {{ dqs_original }} / 100
+        → {{ t.recalculated_without }} {{ detail.removed_trap }}.
+    </span>
+</div>
+{% endfor %}
+{% endif %}
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════════════════ -->
+<div class="footer">
+    AnalytiQ Pro&#8482; &nbsp;·&nbsp; analytiq-pro.com
+    &nbsp;·&nbsp; {{ t.confidential }}
+    &nbsp;·&nbsp; {{ t.generated_on }} {{ timestamp_fmt }}
+</div>
+
+</body>
+</html>

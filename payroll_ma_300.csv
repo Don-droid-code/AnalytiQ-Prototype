@@ -1,0 +1,301 @@
+employee_id,name,email,age,hire_date,job_title,department,salary,status,termination_date,seniority,phone,national_id,gender,grade,bonus
+EMP0001,unique person 0,kenza.smith@company.ma,10,2010-07-24,Manager,Operations,35249.43,Active,,15.8,0683197857,B954551,M,B,2000.00
+EMP0002,UNIQUE PERSON 0,alice.smith@company.ma,11,2014-11-27,Consultant,Finance,28766.07,Inactive,,11.4,0683140807,B459370,M,B,2000.00
+EMP0003,unique person 1,eve.martin@company.ma,12,2013-07-31,Director,Operations,15966.61,Active,,12.8,0623718431,B291752,M,A,2000.00
+EMP0004,UNIQUE PERSON 1,frank.rousseau@company.ma,90,2015-12-07,Consultant,Finance,44005.28,Active,,10.4,0620576383,B219361,F,C,2000.00
+EMP0005,unique person 2,jalil.müller@company.ma,11,2022-12-13,Analyst,Legal,16432.24,Active,,3.4,0620709497,B520245,F,A,2000.00
+EMP0006,UNIQUE PERSON 2,hassan.müller@company.ma,95,2013-08-25,Manager,Legal,17878.18,Active,,12.7,0696977837,B519692,M,B,2000.00
+EMP0007,unique person 3,imane.kim@company.ma,95,2013-08-31,Director,Legal,33461.99,Active,,12.7,0653524491,B578715,M,B,2000.00
+EMP0008,UNIQUE PERSON 3,frank.alami@company.ma,100,2016-01-03,Consultant,Legal,19643.08,Active,,10.3,0677005685,B385037,M,A,2000.00
+EMP0009,unique person 4,charlie.kim@company.ma,100,2022-08-04,Developer,HR,23852.05,Active,,3.7,0663606628,B976303,M,B,2000.00
+EMP0010,UNIQUE PERSON 4,charlie.cohen@company.ma,90,2021-01-25,Analyst,Operations,31215.5,Active,,5.3,0666661351,B504452,F,A,2000.00
+EMP0011,unique person 5,jalil.benali@company.ma,10,2021-11-13,Analyst,Legal,34666.71,Inactive,2025-11-29,4.5,0645812670,B823415,M,A,2000.00
+EMP0012,UNIQUE PERSON 5,charlie.benali@company.ma,90,2010-01-27,Manager,HR,41767.23,Inactive,,16.3,0695758349,B991993,F,B,2000.00
+EMP0013,unique person 6,frank.dupont@company.ma,12,2022-02-05,Consultant,IT,26078.41,Active,,4.2,0658718453,B601476,M,B,2000.00
+EMP0014,UNIQUE PERSON 6,jalil.smith@company.ma,100,2011-12-03,Consultant,Operations,12750.48,Active,,14.4,0683793389,B938754,F,C,2000.00
+EMP0015,unique person 7,jalil.alami@company.ma,11,2014-10-02,Developer,IT,22762.72,Active,,11.6,0697225156,B542226,M,A,2000.00
+EMP0016,UNIQUE PERSON 7,hassan.smith@company.ma,10,2015-07-24,Director,Finance,29767.42,Active,,10.8,0688979095,B780364,F,A,2000.00
+EMP0017,unique person 8,kenza.martin@company.ma,100,2015-02-19,Director,Finance,27023.78,Active,,11.2,0699788677,B935620,M,B,2000.00
+EMP0018,UNIQUE PERSON 8,lina.rousseau@company.ma,90,2022-12-04,Engineer,Marketing,15045.17,Active,,3.4,0698447167,B274880,M,C,2000.00
+EMP0019,unique person 9,hassan.martin@company.ma,48,2012-03-17,Developer,IT,37621.92,Active,,14.1,0643374088,B218548,F,B,2000.00
+EMP0020,UNIQUE PERSON 9,charlie.alami@company.ma,38,2014-02-12,Manager,Finance,24395.84,Active,,12.2,0623141087,B238948,M,B,2000.00
+EMP0021,unique person 10,bob.kim@company.ma,33,2013-09-24,Engineer,Operations,0,Active,,12.6,0632097220,B829987,M,A,2000.00
+EMP0022,UNIQUE PERSON 10,eve.benali@company.ma,32,2016-05-25,Developer,Legal,0,Inactive,2024-07-13,9.9,0639219319,B861697,M,B,2000.00
+EMP0023,unique person 11,alice.müller@company.ma,49,2011-04-14,Engineer,HR,0,Inactive,,15.0,0617634247,B161495,F,A,2000.00
+EMP0024,UNIQUE PERSON 11,bob.rousseau@company.ma,40,2011-07-11,Analyst,HR,0,Active,,14.8,0615334035,B985364,F,A,2000.00
+EMP0025,unique person 12,jalil.rousseau@company.ma,37,2021-09-22,Manager,Legal,0,Active,,4.6,0645650176,B267138,M,B,2000.00
+EMP0026,UNIQUE PERSON 12,eve.benali@company.ma,48,2017-02-03,Engineer,HR,0,Active,,9.2,0619832887,B208751,F,B,2000.00
+EMP0027,unique person 13,charlie.müller@company.ma,40,2011-07-18,Director,Operations,0,Active,,14.8,0650603163,B536236,F,B,2000.00
+EMP0028,UNIQUE PERSON 13,imane.torres@company.ma,45,2012-04-28,Analyst,Finance,0,Active,,14.0,0646553958,B719446,M,B,2000.00
+EMP0029,unique person 14,frank.kim@company.ma,28,2015-12-03,Director,Finance,0,Active,,10.4,0647135391,B606121,M,A,2000.00
+EMP0030,UNIQUE PERSON 14,charlie.torres@company.ma,31,2013-08-16,Developer,Marketing,0,Inactive,,12.7,0630005727,B941235,F,A,2000.00
+EMP0031,unique person 15,jalil.cohen@company.ma,32,2013-04-28,Analyst,IT,0,Active,,13.0,0658024342,,F,B,2000.00
+EMP0032,UNIQUE PERSON 15,frank.cohen@company.ma,44,2019-02-12,Manager,Operations,0,Active,,7.2,0634073380,,M,A,2000.00
+EMP0033,unique person 16,lina.kim@company.ma,44,2015-12-26,Engineer,Finance,0,Active,,10.3,0636786211,,M,C,2000.00
+EMP0034,UNIQUE PERSON 16,diana.kim@company.ma,42,2010-07-13,Director,IT,0,Active,,15.8,0657130035,,F,A,2000.00
+EMP0035,unique person 17,imane.müller@company.ma,46,2010-08-15,Manager,HR,0,Active,,15.7,0615134794,,M,B,2000.00
+EMP0036,UNIQUE PERSON 17,lina.müller@company.ma,28,2019-10-15,Engineer,HR,9999,Active,,6.5,0668526649,,M,B,2000.00
+EMP0037,unique person 18,imane.kim@company.ma,32,2018-03-03,Developer,IT,9999,Active,,8.2,0626726926,,M,B,2000.00
+EMP0038,UNIQUE PERSON 18,grace.müller@company.ma,38,2019-01-10,Manager,Operations,9999,Inactive,,7.3,0633357554,,F,B,2000.00
+EMP0039,unique person 19,imane.martin@company.ma,38,2016-10-25,Engineer,HR,9999,Active,,9.5,0672409658,,M,A,2000.00
+EMP0040,UNIQUE PERSON 19,imane.benali@company.ma,47,2013-10-22,Consultant,Legal,9999,Active,,12.5,0622534217,,F,C,2000.00
+EMP0041,alice martin,diana.dupont@company.ma,49,2010-07-20,Engineer,HR,39440.29,Active,,15.8,0671124923,,M,B,2000.00
+EMP0042,BOB SMITH,lina.alami@company.ma,33,2021-02-01,Manager,Legal,33442.03,Active,,5.2,0667062156,,F,B,2000.00
+EMP0043,charlie dupont,lina.cohen@company.ma,49,2020-06-02,Manager,Finance,24889.09,Inactive,,5.9,0681287314,,F,B,2000.00
+EMP0044,DIANA KIM,hassan.rousseau@company.ma,32,2021-04-28,Engineer,Operations,35515.25,Inactive,,5.0,0644788100,,F,C,2000.00
+EMP0045,eve torres,imane.benali@company.ma,39,2015-05-14,Analyst,Legal,18571.94,Active,,11.0,0655076693,,M,B,2000.00
+EMP0046,ALICE MARTIN,charlie.kim@company.ma,44,2018-08-04,Analyst,Marketing,23081.18,Active,,7.7,0672535301,,M,A,2000.00
+EMP0047,bob smith,grace.alami@company.ma,50,2023-02-06,Engineer,Marketing,8218.16,Inactive,2024-12-26,3.2,0662343121,,M,B,2000.00
+EMP0048,CHARLIE DUPONT,imane.rousseau@company.ma,29,2014-12-12,Director,Marketing,25968.75,Active,,11.4,0655114543,,M,B,2000.00
+EMP0049,diana kim,charlie.rousseau@company.ma,50,2021-12-24,Consultant,HR,32530.99,Active,,4.4,0696268397,,M,B,2000.00
+EMP0050,EVE TORRES,charlie.martin@company.ma,34,2015-11-02,Manager,Marketing,20093.29,Active,,10.5,0647346970,,M,C,2000.00
+EMP0051,alice martin,hassan.martin@company.ma,49,2022-02-05,Senior Global Ops Architect,Legal,10538.88,Active,,4.2,0615403355,,M,B,2000.00
+EMP0052,BOB SMITH,alice.rousseau@company.ma,40,2013-06-02,Senior Global Legal Evangelist,Legal,12232.41,Active,,12.9,0672415804,,M,C,2000.00
+EMP0053,charlie dupont,jalil.smith@company.ma,37,2013-09-03,Senior Lead Data Strategist,Finance,42368.83,Active,,12.7,0660372847,,M,B,2000.00
+EMP0054,DIANA KIM,lina.kim@company.ma,37,2012-04-14,Senior Global AI Specialist,HR,36957.51,Inactive,2024-12-21,14.0,0667495923,,M,A,2000.00
+EMP0055,eve torres,frank.martin@company.ma,29,2019-06-04,Senior Principal Ops Architect,IT,31516.65,Active,,6.9,0630534124,,M,B,2000.00
+EMP0056,ALICE MARTIN,kenza.torres@company.ma,27,2023-10-25,Senior Principal Legal Architect,Marketing,38552.18,Active,,2.5,0646023439,,M,B,2000.00
+EMP0057,bob smith,bob.torres@company.ma,40,2020-02-10,Senior Head Ops Officer,HR,32722.97,Active,,6.2,0613852048,,M,C,2000.00
+EMP0058,CHARLIE DUPONT,diana.müller@company.ma,36,2015-10-18,Senior Chief Ops Evangelist,Legal,40563.97,Active,,10.5,0611362459,,F,B,2000.00
+EMP0059,diana kim,lina.alami@company.ma,26,2020-12-16,Senior Lead Cyber Architect,Marketing,31898.41,Active,,5.4,0670152969,,M,A,2000.00
+EMP0060,EVE TORRES,grace.kim@company.ma,34,2016-11-13,Senior Global Cyber Specialist,HR,20719.02,Active,,9.5,0654398056,,M,A,2000.00
+EMP0061,Eve Kim,eve.kim@company.ma,42,2012-09-15,Senior Lead Ops Specialist,Legal,27826.97,Active,,13.6,0634850391,,F,B,2000.00
+EMP0062,Eve Rousseau,eve.rousseau@company.ma,38,2021-10-07,Senior Global Ops Architect,IT,16416.88,Active,,4.6,0650569669,,M,B,2000.00
+EMP0063,Alice Martin,alice.martin@company.ma,38,2022-05-31,Senior Head Cyber Specialist,Marketing,11795.74,Active,,3.9,0687049595,,M,A,2000.00
+EMP0064,Frank Dupont,frank.dupont@company.ma,40,2011-02-25,Senior Global Legal Architect,Finance,22826.18,Active,,15.2,0687446468,,M,B,2000.00
+EMP0065,Jalil Torres,jalil.torres@company.ma,40,2011-11-29,Senior Principal Data Strategist,Marketing,30433.75,Active,,14.4,0640291214,,F,A,2000.00
+EMP0066,Hassan Torres,hassan.torres@company.ma,32,2023-03-15,Senior Head Cloud Specialist,HR,10228.52,Active,,3.1,0637888820,,F,C,2000.00
+EMP0067,Charlie Kim,charlie.kim@company.ma,26,2013-11-24,Senior Chief Cloud Specialist,Finance,23115.15,Active,,12.4,0689699989,,M,C,2000.00
+EMP0068,Eve Torres,eve.torres@company.ma,48,2020-03-08,Senior Lead AI Evangelist,Legal,29822.21,Active,,6.1,0667061186,,M,B,2000.00
+EMP0069,Charlie Torres,charlie.torres@company.ma,48,2013-03-11,Senior Principal Ops Architect,IT,30016.63,Active,,13.1,0648736657,,M,A,2000.00
+EMP0070,Eve Alami,eve.alami@company.ma,28,2016-02-09,Senior Global Cyber Officer,Marketing,10976.35,Inactive,,10.2,0653261270,,F,C,2000.00
+EMP0071,Diana Rousseau,diana.rousseau@company.ma,50,2023-03-03,Senior Chief Data Strategist,Finance,36235.03,Active,,3.2,0673149551,,F,A,2000.00
+EMP0072,Charlie Rousseau,charlie.rousseau@company.ma,29,2019-10-11,Senior Chief Ops Officer,IT,23108.88,Active,,6.6,0699943797,,M,B,2000.00
+EMP0073,Lina Benali,lina.benali@company.ma,33,2016-06-19,Senior Global Data Evangelist,Marketing,11258.21,Inactive,2024-09-15,9.9,0625558733,,M,B,2000.00
+EMP0074,Alice Cohen,alice.cohen@company.ma,32,2020-05-12,Senior Global Cyber Strategist,HR,21385.84,Active,,6.0,0693940940,,M,A,2000.00
+EMP0075,Imane Dupont,imane.dupont@company.ma,31,2016-06-17,Senior Head Ops Architect,Finance,44006.43,Active,,9.9,0642117961,,F,C,2000.00
+EMP0076,Imane Alami,imane.alami@company.ma,41,2012-02-03,Senior Lead Legal Officer,Finance,31965.26,Active,,14.2,0676890827,,M,B,2000.00
+EMP0077,Grace Benali,grace.benali@company.ma,40,2020-08-04,Senior Principal Ops Strategist,Operations,22192.68,Active,,5.7,0678214937,,F,A,2000.00
+EMP0078,Grace Müller,grace.müller@company.ma,39,2021-05-22,Senior Head Cyber Specialist,Legal,19046.57,Active,,4.9,0687835998,,M,B,2000.00
+EMP0079,Hassan Müller,hassan.müller@company.ma,26,2017-06-16,Senior Lead Legal Architect,Marketing,42515.53,Inactive,,8.9,0642051937,,F,A,2000.00
+EMP0080,Grace Martin,grace.martin@company.ma,30,2017-02-19,Senior Global Legal Evangelist,Legal,37318.57,Active,,9.2,0630415230,,M,A,2000.00
+EMP0081,Jalil Müller,jalil.müller@company.ma,31,2012-04-02,Senior Global Legal Strategist,Marketing,8567.86,Active,,14.1,0665026398,,F,A,2000.00
+EMP0082,Eve Müller,eve.müller@company.ma,33,2023-12-24,Senior Lead Data Specialist,Legal,39795.66,Active,,2.4,0652501540,,M,B,2000.00
+EMP0083,Bob Kim,bob.kim@company.ma,41,2016-06-12,Senior Lead AI Officer,Finance,36133.68,Active,,9.9,0623489853,,M,B,2000.00
+EMP0084,Alice Martin,alice.martin@company.ma,48,2017-04-11,Senior Global AI Officer,IT,23935.41,Active,,9.1,0681291936,,M,B,2000.00
+EMP0085,Charlie Dupont,charlie.dupont@company.ma,47,2013-12-05,Senior Global Data Strategist,HR,33275.98,Inactive,,12.4,0629208935,,F,A,2000.00
+EMP0086,Hassan Torres,hassan.torres@company.ma,30,2010-03-18,Senior Principal Ops Officer,HR,13845.1,Active,,16.1,0656381032,,F,C,2000.00
+EMP0087,Grace Torres,grace.torres@company.ma,37,2020-03-31,Senior Head Ops Evangelist,Marketing,11946.17,Active,,6.1,0686762164,,M,B,2000.00
+EMP0088,Lina Torres,lina.torres@company.ma,33,2010-06-29,Senior Global Data Architect,HR,40007.49,Active,,15.8,0691390501,,M,C,2000.00
+EMP0089,Diana Rousseau,diana.rousseau@company.ma,41,2017-11-26,Senior Chief Ops Evangelist,IT,33077.28,Active,,8.4,0628358198,,M,A,2000.00
+EMP0090,Hassan Martin,hassan.martin@company.ma,34,2022-12-31,Senior Principal Cloud Evangelist,IT,20088.61,Active,,3.3,0633574011,,F,B,2000.00
+EMP0091,Frank Cohen,frank.cohen@company.ma,39,2021-04-03,Senior Global AI Strategist,Marketing,43793.21,Active,,5.1,0655461591,,M,A,2000.00
+EMP0092,Charlie Kim,charlie.kim@company.ma,26,2018-11-30,Senior Head Cloud Officer,Marketing,8514.99,Active,,7.4,0626587799,,M,C,2000.00
+EMP0093,Kenza Torres,kenza.torres@company.ma,34,2023-02-10,Senior Chief Ops Officer,Legal,16651.41,Active,,3.2,0693154172,,F,C,2000.00
+EMP0094,Diana Smith,diana.smith@company.ma,37,2020-05-31,Senior Lead Data Architect,Operations,9677.83,Active,,5.9,0650851122,,M,A,2000.00
+EMP0095,Imane Dupont,imane.dupont@company.ma,31,2018-09-19,Senior Lead Ops Officer,Legal,33769.91,Active,,7.6,0666254240,,F,B,2000.00
+EMP0096,Kenza Smith,kenza.smith@company.ma,33,2020-12-22,Senior Principal Data Officer,Legal,21709.61,Active,,5.4,0669686067,,F,C,2000.00
+EMP0097,Kenza Müller,kenza.müller@company.ma,35,2022-03-19,Senior Head Data Architect,IT,15022.92,Active,,4.1,0671031132,,M,B,2000.00
+EMP0098,Jalil Martin,jalil.martin@company.ma,36,2011-02-19,Senior Lead Data Officer,HR,15592.61,Active,,15.2,0637804191,,F,B,2000.00
+EMP0099,Diana Müller,diana.müller@company.ma,51,2013-04-23,Senior Global Legal Strategist,Operations,27987.97,Active,,13.0,0624754064,,M,B,2000.00
+EMP0100,Diana Rousseau,diana.rousseau@company.ma,50,2017-04-06,Senior Head Cloud Specialist,Finance,12690.07,Active,,9.1,0680610004,,M,A,2000.00
+EMP0101,Frank Cohen,frank.cohen@company.ma,46,2023-04-26,Senior Principal Legal Strategist,Operations,42980.38,Active,,3.0,0698436473,,F,1,2000.00
+EMP0102,Alice Martin,alice.martin@company.ma,33,2020-09-28,Senior Lead Cyber Officer,Finance,26139.95,Active,,5.6,0619863756,,M,4,2000.00
+EMP0103,Bob Dupont,bob.dupont@company.ma,26,2016-03-02,Senior Global Legal Strategist,HR,27630.6,Active,,10.2,0677853916,,F,3,2000.00
+EMP0104,Lina Smith,lina.smith@company.ma,41,2022-05-14,Senior Chief AI Strategist,Operations,23311.1,Active,,4.0,0663516659,,M,1,2000.00
+EMP0105,Frank Torres,frank.torres@company.ma,44,2018-05-25,Senior Chief Legal Strategist,Finance,38775.56,Active,,7.9,0667965485,,M,1,2000.00
+EMP0106,Imane Martin,imane.martin@company.ma,26,2023-02-26,Senior Principal Cyber Strategist,Legal,12522.56,Inactive,2024-12-28,3.2,0666765623,,M,1,2000.00
+EMP0107,Frank Smith,frank.smith@company.ma,28,2022-12-18,Senior Principal Legal Strategist,Legal,25841.01,Active,,3.4,0656991504,,F,1,2000.00
+EMP0108,Eve Rousseau,eve.rousseau@company.ma,32,2015-01-27,Senior Lead Cloud Architect,HR,32974.14,Inactive,2025-07-24,11.3,0691737913,,M,2,2000.00
+EMP0109,Lina Torres,lina.torres@company.ma,35,2017-08-15,Senior Head Data Evangelist,Operations,28953.88,Active,,8.7,0619339597,,F,3,2000.00
+EMP0110,Imane Kim,imane.kim@company.ma,32,2018-06-09,Senior Global AI Architect,Operations,21691.96,Active,,7.9,0686181117,,F,1,2000.00
+EMP0111,Charlie Dupont,charlie.dupont@company.ma,49,2023-11-10,Senior Global Legal Officer,Marketing,32491.73,Active,,2.5,0691480362,,M,2,2000.00
+EMP0112,Imane Smith,imane.smith@company.ma,32,2017-09-28,Senior Chief AI Architect,Legal,33103.99,Active,,8.6,0680723898,,M,3,2000.00
+EMP0113,Jalil Martin,jalil.martin@company.ma,42,2010-03-04,Senior Chief Data Strategist,Operations,36273.95,Active,,16.2,0654039837,,M,4,2000.00
+EMP0114,Grace Dupont,grace.dupont@company.ma,34,2012-11-24,Senior Principal Cloud Evangelist,Operations,26509.71,Inactive,2025-11-15,13.4,0619673809,,M,4,2000.00
+EMP0115,Hassan Smith,hassan.smith@company.ma,25,2017-01-08,Senior Head Cyber Architect,Marketing,34251.46,Active,,9.3,0648858073,,M,4,2000.00
+EMP0116,Frank Dupont,frank.dupont@company.ma,30,2023-11-12,Senior Lead Legal Specialist,Marketing,39245.92,Active,,2.5,0668475513,,F,4,2000.00
+EMP0117,Grace Torres,grace.torres@company.ma,41,2017-08-13,Senior Chief Cloud Architect,Finance,26887.88,Active,,8.7,0681216573,,F,4,2000.00
+EMP0118,Frank Müller,frank.müller@company.ma,40,2013-04-24,Senior Chief Data Strategist,IT,15299.06,Active,,13.0,0630517835,,M,3,2000.00
+EMP0119,Kenza Benali,kenza.benali@company.ma,26,2020-05-28,Senior Lead Ops Officer,Legal,42193.71,Inactive,,5.9,0695268296,,F,1,2000.00
+EMP0120,Kenza Müller,kenza.müller@company.ma,31,2013-05-21,Senior Global Ops Specialist,Marketing,31361.25,Active,,12.9,0689379016,,M,4,2000.00
+EMP0121,Eve Benali,eve.benali@company.ma,49,2020-02-20,Senior Chief Cloud Specialist,IT,10839.05,Active,,6.2,0692545028,,F,1,2000.00
+EMP0122,Jalil Cohen,jalil.cohen@company.ma,31,2010-12-03,Senior Chief Cyber Officer,Operations,19896.49,Inactive,2025-05-02,15.4,0630248230,,M,1,2000.00
+EMP0123,Frank Smith,frank.smith@company.ma,43,2021-04-26,Senior Lead Data Strategist,Legal,24197.06,Active,,5.0,0680339290,,F,1,2000.00
+EMP0124,Frank Torres,frank.torres@company.ma,33,2018-09-09,Senior Principal Cyber Strategist,HR,9937.52,Active,,7.6,0696879854,,M,1,2000.00
+EMP0125,Imane Alami,imane.alami@company.ma,40,2016-05-16,Senior Global AI Evangelist,IT,11015.57,Inactive,2025-08-04,10.0,0656952151,,M,1,2000.00
+EMP0126,Lina Smith,lina.smith@company.ma,26,2016-12-11,Senior Principal Data Officer,IT,38087.84,Active,,9.4,0680651318,,M,A,2000.00
+EMP0127,Alice Müller,alice.müller@company.ma,43,2016-12-05,Senior Global Ops Strategist,Marketing,15104.19,Active,,9.4,0630796389,,M,C,2000.00
+EMP0128,Bob Cohen,bob.cohen@company.ma,27,2022-02-08,Senior Chief Data Architect,IT,40426.53,Active,,4.2,0627589104,,F,A,2000.00
+EMP0129,Charlie Rousseau,charlie.rousseau@company.ma,31,2013-09-18,Senior Head Ops Architect,IT,33025.43,Active,,12.6,0669619341,,F,C,2000.00
+EMP0130,Hassan Kim,hassan.kim@company.ma,40,2021-12-23,Senior Principal Cloud Specialist,Operations,21610.12,Active,,4.4,0669135982,,M,C,2000.00
+EMP0131,Imane Cohen,imane.cohen@company.ma,44,2019-05-23,Senior Principal Ops Architect,Operations,40301.07,Active,,6.9,0696057593,,M,C,2000.00
+EMP0132,Bob Cohen,bob.cohen@company.ma,38,2012-10-18,Senior Principal AI Evangelist,IT,24624.81,Active,,13.5,0629776801,,M,A,2000.00
+EMP0133,Diana Benali,diana.benali@company.ma,50,2017-11-03,Senior Head Cyber Strategist,Marketing,26574.26,Active,,8.5,0661830338,,M,C,2000.00
+EMP0134,Frank Smith,frank.smith@company.ma,44,2017-07-09,Senior Chief Cyber Strategist,IT,41943.66,Active,,8.8,0628628439,,M,A,2000.00
+EMP0135,Bob Martin,bob.martin@company.ma,41,2015-09-28,Senior Global Cloud Strategist,Legal,30528.56,Active,,10.6,0624923247,,M,B,2000.00
+EMP0136,Alice Kim,alice.kim@company.ma,30,2019-06-02,Senior Principal Legal Architect,Marketing,30079.34,Active,,6.9,0694819556,,F,B,2000.00
+EMP0137,Charlie Torres,charlie.torres@company.ma,51,2019-08-18,Senior Lead Cloud Specialist,Operations,29114.56,Inactive,2024-07-10,6.7,0699686286,,M,B,2000.00
+EMP0138,Bob Cohen,bob.cohen@company.ma,28,2022-03-16,Senior Head AI Architect,Finance,22446.79,Inactive,,4.1,0695318289,,M,C,2000.00
+EMP0139,Alice Müller,alice.müller@company.ma,35,2011-07-08,Senior Chief Data Officer,Legal,31245.51,Active,,14.8,0654629892,,F,A,2000.00
+EMP0140,Frank Dupont,frank.dupont@company.ma,29,2020-06-03,Senior Global Cloud Strategist,Finance,34493.67,Active,,5.9,0614963880,,M,B,2000.00
+EMP0141,Diana Martin,diana.martin@company.ma,37,2017-01-29,Senior Principal AI Officer,HR,25515.79,Inactive,2024-02-07,9.3,0635649468,,M,C,2000.00
+EMP0142,Alice Müller,alice.müller@company.ma,45,2016-02-17,Senior Chief Data Strategist,Marketing,35502.39,Active,,10.2,0655504725,,F,A,2000.00
+EMP0143,Frank Cohen,frank.cohen@company.ma,47,2015-12-25,Senior Chief Ops Specialist,Marketing,30290.77,Active,,10.3,0683212334,,M,C,2000.00
+EMP0144,Frank Torres,frank.torres@company.ma,31,2016-11-15,Senior Principal Data Officer,Marketing,14165.86,Inactive,2025-03-30,9.5,0670012727,,M,C,2000.00
+EMP0145,Grace Torres,grace.torres@company.ma,47,2011-04-15,Senior Lead Ops Strategist,HR,37640.55,Active,,15.0,0631473054,,M,B,2000.00
+EMP0146,Kenza Benali,kenza.benali@company.ma,45,2010-10-13,Senior Lead Cyber Architect,Legal,21554.15,Active,,15.5,0686134287,,M,B,2000.00
+EMP0147,Hassan Müller,hassan.müller@company.ma,31,2018-05-06,Senior Global Data Evangelist,Operations,27590.02,Active,,8.0,0652196099,,M,B,2000.00
+EMP0148,Alice Dupont,alice.dupont@company.ma,28,2021-03-12,Senior Chief Ops Officer,Finance,17685.74,Active,,5.1,0669897763,,F,B,2000.00
+EMP0149,Hassan Kim,hassan.kim@company.ma,45,2012-10-01,Senior Global Cloud Specialist,Operations,41251.12,Active,,13.6,0621783073,,M,C,2000.00
+EMP0150,Imane Cohen,imane.cohen@company.ma,37,2016-07-06,Senior Principal AI Strategist,Legal,42311.0,Active,,9.8,0633366099,,M,B,2000.00
+EMP0151,Diana Dupont,diana.dupont@company.ma,29,2015-04-24,Director,HR,29174.26,Active,2025-08-05,11.0,0684040798,,F,B,2000.00
+EMP0152,Bob Torres,bob.torres@company.ma,29,2018-12-06,Engineer,Marketing,38463.56,Active,2025-11-25,7.4,0652550733,,M,A,2000.00
+EMP0153,Imane Müller,imane.müller@company.ma,26,2012-11-17,Manager,Operations,24006.88,Active,2025-03-24,13.5,0679538491,,F,C,2000.00
+EMP0154,Frank Kim,frank.kim@company.ma,28,2017-10-05,Analyst,IT,15263.17,Active,2024-07-04,8.6,0646836194,,F,C,2000.00
+EMP0155,Bob Cohen,bob.cohen@company.ma,44,2013-10-13,Developer,HR,34663.41,Active,2025-09-17,12.5,0655314533,,F,A,2000.00
+EMP0156,Alice Smith,alice.smith@company.ma,25,2011-01-08,Developer,Operations,36377.48,Active,2025-01-23,15.3,0692961108,,M,A,2000.00
+EMP0157,Imane Torres,imane.torres@company.ma,29,2016-10-10,Developer,Marketing,19005.05,Active,2025-01-02,9.6,0618041391,,F,A,2000.00
+EMP0158,Hassan Kim,hassan.kim@company.ma,44,2017-08-18,Developer,IT,35165.39,Active,2025-09-18,8.7,0663514837,,F,C,2000.00
+EMP0159,Bob Müller,bob.müller@company.ma,30,2015-06-04,Director,Marketing,17173.0,Active,2024-01-30,10.9,0616792127,,M,A,2000.00
+EMP0160,Grace Kim,grace.kim@company.ma,36,2013-08-01,Developer,IT,15023.86,Active,2025-12-01,12.7,0679085198,,M,A,2000.00
+EMP0161,Hassan Martin,hassan.martin@company.ma,33,2012-01-08,Engineer,Operations,15960.34,Active,2024-05-13,14.3,0616783418,,M,A,2000.00
+EMP0162,Kenza Benali,kenza.benali@company.ma,27,2016-05-29,Analyst,Marketing,12955.59,Active,2025-05-09,9.9,0659093843,,M,C,2000.00
+EMP0163,Alice Rousseau,alice.rousseau@company.ma,42,2022-08-08,Consultant,IT,10720.67,Active,2025-05-14,3.7,0670445541,,F,C,2000.00
+EMP0164,Jalil Rousseau,jalil.rousseau@company.ma,45,2012-08-31,Engineer,IT,37411.2,Active,2024-04-25,13.7,0684870921,,M,B,2000.00
+EMP0165,Imane Alami,imane.alami@company.ma,49,2021-03-20,Analyst,Operations,34402.9,Active,2025-02-25,5.1,0679703656,,M,B,2000.00
+EMP0166,Imane Dupont,imane.dupont@company.ma,37,2017-05-10,Engineer,HR,35354.82,Active,,9.0,0689688374,,M,B,2000.00
+EMP0167,Imane Benali,imane.benali@company.ma,37,2022-08-17,Analyst,IT,20255.86,Active,,3.7,0665907088,,F,C,2000.00
+EMP0168,Lina Martin,lina.martin@company.ma,30,2023-05-22,Developer,HR,29372.47,Active,,2.9,0688319168,,M,B,2000.00
+EMP0169,Lina Rousseau,lina.rousseau@company.ma,44,2018-07-12,Analyst,HR,43083.59,Active,,7.8,0635606639,,M,A,2000.00
+EMP0170,Charlie Alami,charlie.alami@company.ma,32,2014-07-29,Consultant,Marketing,40294.26,Inactive,,11.8,0628533117,,F,B,2000.00
+EMP0171,Kenza Benali,kenza.benali@company.ma,34,2021-10-14,Manager,Marketing,41748.59,Active,,9.7,0683319550,,M,C,2000.00
+EMP0172,Diana Kim,diana.kim@company.ma,26,2016-04-04,Manager,IT,36533.45,Active,,13.4,0637820354,,M,C,2000.00
+EMP0173,Imane Torres,imane.torres@company.ma,45,2016-06-15,Developer,HR,22048.68,Inactive,2025-02-08,16.2,0629659692,,M,A,2000.00
+EMP0174,Lina Smith,lina.smith@company.ma,31,2017-10-08,Developer,Marketing,15917.51,Active,,11.7,0646390817,,F,C,2000.00
+EMP0175,Jalil Rousseau,jalil.rousseau@company.ma,40,2015-05-15,Developer,HR,16349.85,Active,,18.3,0617045237,,M,A,2000.00
+EMP0176,Hassan Smith,hassan.smith@company.ma,51,2013-01-31,Manager,Marketing,32157.03,Inactive,,18.8,0697313825,,F,C,2000.00
+EMP0177,Kenza Martin,kenza.martin@company.ma,25,2012-01-03,Consultant,Legal,34755.35,Active,,21.0,0633496796,,M,B,2000.00
+EMP0178,Alice Alami,alice.alami@company.ma,43,2021-02-10,Analyst,Finance,19040.51,Active,,11.8,0624401654,,M,C,2000.00
+EMP0179,Kenza Cohen,kenza.cohen@company.ma,29,2021-10-05,Consultant,Marketing,18094.97,Active,,8.7,0654383668,,F,A,2000.00
+EMP0180,Lina Dupont,lina.dupont@company.ma,36,2010-04-26,Consultant,Legal,36019.46,Active,,23.8,0692000924,,M,A,2000.00
+EMP0181,Bob Alami,bob.alami@company.ma,43,2012-02-21,Engineer,IT,42625.54,Active,,21.6,0645002007,,M,B,2000.00
+EMP0182,Eve Müller,eve.müller@company.ma,25,2016-10-09,Director,Legal,21303.43,Active,,15.2,0618338186,,M,A,2000.00
+EMP0183,Grace Cohen,grace.cohen@company.ma,46,2016-12-22,Director,HR,16171.42,Active,,15.8,0674180488,,F,A,2000.00
+EMP0184,Jalil Müller,jalil.müller@company.ma,26,2019-04-30,Consultant,Legal,38547.33,Active,,13.1,0689968863,,M,B,2000.00
+EMP0185,Lina Müller,lina.müller@company.ma,26,2011-10-02,Analyst,HR,41406.86,Active,,19.8,0686866717,,F,B,2000.00
+EMP0186,Imane Benali,imane.benali@company.ma,42,2012-08-10,Engineer,Finance,41258.91,Inactive,,20.3,0670858653,,F,B,2000.00
+EMP0187,Jalil Martin,jalil.martin@company.ma,30,2022-07-14,Developer,Finance,22650.1,Active,,9.2,0639246218,,F,A,2000.00
+EMP0188,Frank Smith,frank.smith@company.ma,48,2022-02-20,Engineer,Finance,18622.36,Active,,10.5,0628176954,,M,C,2000.00
+EMP0189,Grace Benali,grace.benali@company.ma,34,2018-06-20,Developer,Legal,40358.49,Active,,14.1,0697715861,,M,A,2000.00
+EMP0190,Imane Alami,imane.alami@company.ma,45,2021-11-11,Analyst,Finance,44204.16,Active,,8.2,0683074216,,M,B,2000.00
+EMP0191,Diana Kim,diana.kim@company.ma,35,2020-05-01,Director,Operations,42684.18,Active,,13.1,0614324134,,M,B,2000.00
+EMP0192,Alice Kim,alice.kim@company.ma,48,2014-08-16,Consultant,Finance,24518.32,Active,,19.2,0616533225,,F,A,2000.00
+EMP0193,Diana Cohen,diana.cohen@company.ma,48,2014-11-15,Consultant,IT,16663.98,Active,,17.6,0652802529,,F,B,2000.00
+EMP0194,Frank Kim,frank.kim@company.ma,44,2016-10-08,Manager,Marketing,19118.54,Inactive,,12.7,0689412216,,F,A,2000.00
+EMP0195,Alice Müller,alice.müller@company.ma,27,2018-07-20,Developer,Marketing,23105.59,Active,,15.5,0660527631,,F,B,2000.00
+EMP0196,Diana Torres,diana.torres@company.ma,30,2013-03-28,Consultant,Marketing,43808.09,Active,,13.1,0681134297,,F,A,2000.00
+EMP0197,Diana Müller,diana.müller@company.ma,31,2011-10-10,Analyst,HR,34809.63,Active,,14.6,0616917129,,M,A,2000.00
+EMP0198,Jalil Martin,jalil.martin@company.ma,42,2011-08-20,Developer,Legal,28677.47,Inactive,2025-05-05,14.7,0654689713,,M,A,2000.00
+EMP0199,Diana Smith,diana.smith@company.ma,40,2020-09-28,Developer,Operations,22675.39,Inactive,2024-09-02,5.6,0653166435,,M,A,2000.00
+EMP0200,Kenza Müller,kenza.müller@company.ma,39,2016-12-01,Consultant,Marketing,25242.15,Active,,9.4,0652980983,,F,C,2000.00
+EMP0201,Alice Rousseau,alice.rousseau@company.ma,44,2014-12-18,Director,HR,42586.06,On Leave,,11.4,0666046380,,M,B,2000.00
+EMP0202,Diana Alami,diana.alami@company.ma,40,2022-10-12,Consultant,Legal,42908.19,On Leave,,3.6,0644537812,,M,A,2000.00
+EMP0203,Lina Müller,lina.müller@company.ma,45,2013-10-18,Engineer,Operations,41925.28,On Leave,,12.5,0617882882,,F,A,2000.00
+EMP0204,Bob Martin,bob.martin@company.ma,32,2010-02-22,Developer,Operations,10514.81,On Leave,,16.2,0611226946,,F,B,2000.00
+EMP0205,Alice Rousseau,alice.rousseau@company.ma,29,2023-10-30,Analyst,Finance,27691.86,On Leave,,2.5,0611590610,,M,B,2000.00
+EMP0206,Imane Torres,imane.torres@company.ma,28,2010-05-21,Manager,Finance,NC,On Leave,,15.9,0629984682,,F,B,2000.00
+EMP0207,Eve Müller,eve.müller@company.ma,33,2015-12-30,Director,Marketing,Confidentiel,On Leave,,10.3,0640314047,,M,A,2000.00
+EMP0208,Kenza Martin,kenza.martin@company.ma,33,2012-02-05,Engineer,HR,,On Leave,,14.2,0611268380,,F,A,2000.00
+EMP0209,Grace Müller,grace.müller@company.ma,47,2022-09-10,Analyst,Operations,NC,On Leave,2025-12-09,3.6,0673820568,,M,A,2000.00
+EMP0210,Kenza Torres,kenza.torres@company.ma,26,2022-03-07,Manager,IT,NC,On Leave,,4.2,0688790652,,F,A,2000.00
+EMP0211,Eve Dupont,eve.dupont@company.ma,40,2022-08-25,Engineer,Legal,Confidentiel,On Leave,2024-12-05,3.7,0628783850,,M,B,2000.00
+EMP0212,Frank Martin,frank.martin@company.ma,31,2012-03-11,Analyst,IT,,On Leave,,14.1,0689941241,,M,C,2000.00
+EMP0213,Eve Benali,eve.benali@company.ma,41,2021-01-02,Consultant,Marketing,NC,On Leave,,5.3,0688634827,,M,A,2000.00
+EMP0214,Eve Kim,eve.kim@company.ma,47,2011-08-26,Manager,Marketing,Voir RH,On Leave,,14.7,0630706693,,M,C,2000.00
+EMP0215,Bob Martin,bob.martin@company.ma,31,2016-11-30,Director,Finance,Voir RH,On Leave,,9.4,0667845091,,M,B,2000.00
+EMP0216,Grace Smith,grace.smith@company.ma,47,2010-08-04,Consultant,Finance,Voir RH,On Leave,,15.7,0661705758,,M,C,2000.00
+EMP0217,Bob Cohen,bob.cohen@company.ma,25,2015-06-12,Manager,Legal,,On Leave,2024-05-22,10.9,0650417154,,M,A,2000.00
+EMP0218,Charlie Alami,charlie.alami@company.ma,32,2016-03-10,Engineer,Finance,Voir RH,On Leave,,10.1,0693890601,,M,B,2000.00
+EMP0219,Hassan Smith,hassan.smith@company.ma,37,2013-01-14,Engineer,IT,TBD,On Leave,,13.3,0654230340,,M,C,2000.00
+EMP0220,Kenza Rousseau,kenza.rousseau@company.ma,37,2013-01-20,Consultant,Legal,Confidentiel,On Leave,,13.3,0633842070,,M,C,2000.00
+EMP0221,Lina Benali,lina.benali@company.ma,40,2022-12-01,Engineer,IT,TBD,Active,,3.4,0658991556,,M,B,2000.00
+EMP0222,Imane Dupont,imane.dupont@company.ma,50,2022-05-04,Developer,Operations,TBD,Active,,4.0,0619282319,,M,A,2000.00
+EMP0223,Eve Kim,eve.kim@company.ma,44,2015-09-01,Engineer,Finance,Voir RH,Active,,10.7,0674321792,,F,A,2000.00
+EMP0224,Lina Alami,lina.alami@company.ma,49,2022-03-12,Developer,HR,Confidentiel,Active,,4.1,0624679315,,F,C,2000.00
+EMP0225,Jalil Martin,jalil.martin@company.ma,33,2022-08-19,Engineer,Finance,NC,Active,,3.7,0639796480,,F,B,2000.00
+EMP0226,Lina Rousseau,lina.rousseau@company.ma,31,2014-12-16,Engineer,Marketing,36576.66,Active,,11.4,0677171380,,F,C,2000.00
+EMP0227,Hassan Smith,hassan.smith@company.ma,32,2016-08-17,Analyst,Legal,13241.98,Active,,9.7,0656045630,,M,B,2000.00
+EMP0228,Frank Benali,frank.benali@company.ma,31,2012-03-10,Director,Finance,19109.77,Active,,14.1,0625446483,,M,C,2000.00
+EMP0229,Kenza Dupont,kenza.dupont@company.ma,28,2015-06-22,Consultant,Operations,20246.62,Active,,10.9,0672015859,,F,A,2000.00
+EMP0230,Charlie Alami,charlie.alami@company.ma,50,2018-11-15,Manager,Marketing,29911.52,Inactive,,7.5,0638829445,,F,C,2000.00
+EMP0231,Bob Rousseau,bob.rousseau@company.ma,27,2012-04-13,Director,IT,9999,Active,,14.0,0645212476,,M,B,2000.00
+EMP0232,Frank Rousseau,frank.rousseau@company.ma,33,2018-09-19,Analyst,IT,9999,Inactive,2025-10-16,7.6,0633156250,,M,B,2000.00
+EMP0233,Kenza Dupont,kenza.dupont@company.ma,46,2017-01-09,Director,Finance,9999,Active,,9.3,0628972822,,F,A,2000.00
+EMP0234,Charlie Rousseau,charlie.rousseau@company.ma,32,2018-08-10,Engineer,Legal,9999,Active,,7.7,0633251181,,F,B,2000.00
+EMP0235,Charlie Dupont,charlie.dupont@company.ma,31,2017-01-21,Analyst,IT,9999,Inactive,2025-07-13,9.3,0636189702,,M,B,2000.00
+EMP0236,Hassan Alami,hassan.alami@company.ma,32,2021-01-11,Engineer,Operations,9999,Active,,5.3,0639598969,,M,A,2000.00
+EMP0237,Imane Torres,imane.torres@company.ma,30,2013-10-09,Developer,Marketing,9999,Inactive,2024-04-25,12.6,0625328557,,M,B,2000.00
+EMP0238,Frank Cohen,frank.cohen@company.ma,31,2010-12-07,Manager,Marketing,9999,Inactive,2025-10-31,15.4,0649957816,,M,A,2000.00
+EMP0239,Bob Benali,bob.benali@company.ma,40,2012-08-19,Developer,HR,9999,Active,,13.7,0691907952,,M,B,2000.00
+EMP0240,Diana Kim,diana.kim@company.ma,25,2011-05-02,Consultant,IT,9999,Active,,15.0,0653440052,,M,C,2000.00
+EMP0241,Imane Smith,imane.smith@company.ma,32,2013-01-15,Director,Legal,9999,Active,,13.3,0643511112,,F,C,4806.44
+EMP0242,Kenza Alami,kenza.alami@company.ma,44,2020-12-23,Developer,IT,9999,Inactive,2025-05-26,5.4,0620135622,,M,A,2842.73
+EMP0243,Eve Müller,eve.müller@company.ma,29,2020-03-13,Consultant,Finance,9999,Active,,6.1,0671532017,,M,A,4038.16
+EMP0244,Grace Kim,grace.kim@company.ma,41,2019-08-21,Director,IT,9999,Active,,6.7,0683458776,,F,B,1217.17
+EMP0245,Hassan Müller,hassan.müller@company.ma,49,2011-02-01,Developer,Marketing,9999,Active,,15.2,0669228397,,M,A,2943.86
+EMP0246,Grace Kim,grace.kim@company.ma,37,2012-12-16,Director,Finance,9999,Active,,13.4,0621062296,,M,B,2315.38
+EMP0247,Kenza Torres,kenza.torres@company.ma,32,2015-04-03,Developer,Finance,9999,Active,,11.1,0620460758,,F,B,2072.31
+EMP0248,Kenza Benali,kenza.benali@company.ma,51,2010-03-18,Analyst,Marketing,9999,Active,,16.1,0619506414,,F,A,4475.29
+EMP0249,Bob Smith,bob.smith@company.ma,34,2017-01-10,Manager,Marketing,9999,Active,,9.3,0696110892,,F,A,3485.01
+EMP0250,Alice Rousseau,alice.rousseau@company.ma,31,2013-09-06,Developer,Operations,9999,Active,,12.6,0665258766,,F,A,1989.8
+EMP0251,Bob Smith,bob.smith@company.ma,45,2013-02-20,Developer,Marketing,21006.82,Inactive,,13.2,0628767690,,F,C,1821.08
+EMP0252,Diana Cohen,diana.cohen@company.ma,38,2023-06-25,Developer,IT,15601.49,Active,,2.9,0678386961,,F,A,4776.39
+EMP0253,Alice Kim,alice.kim@company.ma,34,2021-02-06,Manager,Marketing,31609.05,Active,,5.2,0680905413,,M,C,3282.26
+EMP0254,Charlie Alami,charlie.alami@company.ma,32,2022-10-01,Consultant,Legal,14392.5,Active,,3.6,0619796799,,M,B,2636.86
+EMP0255,Eve Kim,eve.kim@company.ma,48,2010-11-23,Consultant,IT,31257.12,Active,,15.4,0665758338,,M,A,3026.01
+EMP0256,Imane Cohen,imane.cohen@company.ma,44,2023-10-26,Analyst,IT,10923.8,Active,,2.5,0630854365,,F,C,2000.00
+EMP0257,Kenza Smith,kenza.smith@company.ma,31,2016-12-15,Analyst,Operations,11189.87,Active,,9.4,0625567455,,M,B,2000.00
+EMP0258,Eve Dupont,eve.dupont@company.ma,50,2012-09-05,Developer,Finance,14061.81,Active,,13.7,0680196591,,F,C,2000.00
+EMP0259,Charlie Torres,charlie.torres@company.ma,50,2012-08-25,Engineer,IT,27382.61,Active,,13.7,0687396877,,M,A,2000.00
+EMP0260,Frank Martin,frank.martin@company.ma,25,2021-03-16,Director,Operations,17439.29,Active,,5.1,0687029205,,M,B,2000.00
+EMP0261,Alice Martin,not-email,40,2025-06-01,Engineer,IT,22170.24,Inactive,2025-07-21,16.1,0634019729,,M,B,2000.00
+EMP0262,Lina Alami,missingat.com,36,2025-06-01,Engineer,Legal,19837.6,Inactive,2024-01-01,11.3,0686710258,,M,A,2000.00
+EMP0263,Alice Dupont,noatsign,28,2025-06-01,Engineer,Finance,40448.68,Inactive,,11.3,0651701149,,M,A,2000.00
+EMP0264,Alice Müller,user@,38,2025-06-01,Director,Legal,31040.55,Inactive,2024-01-01,11.8,0689415412,,M,B,2000.00
+EMP0265,Imane Kim,@nodomain.com,51,2025-06-01,Analyst,Operations,28037.17,Inactive,2024-01-01,13.0,0611287794,,M,A,2000.00
+EMP0266,Grace Torres,double@@domain.com,42,2025-06-01,Manager,Marketing,26205.07,Inactive,2024-01-01,14.0,0647557512,,M,A,2000.00
+EMP0267,Imane Alami,spaces @email.com,30,2025-06-01,Consultant,Finance,26700.83,Inactive,,8.0,0662928934,,M,B,2000.00
+EMP0268,Grace Dupont,no_tld@domain,38,2025-06-01,Director,Marketing,33926.85,Inactive,2024-01-01,11.0,0652688984,,M,C,2000.00
+EMP0269,Diana Dupont,.bad@domain.com,46,2025-06-01,Analyst,Operations,24633.97,Inactive,2024-01-01,3.2,0664561191,,M,B,2000.00
+EMP0270,Diana Benali,end.@domain.com,30,2025-06-01,Analyst,Finance,13831.77,Inactive,,9.4,0650831043,,F,A,2000.00
+EMP0271,Frank Dupont,a,40,2012-01-18,Engineer,HR,9811.17,Active,,14.3,0644918995,,F,A,2000.00
+EMP0272,Hassan Cohen,b@,40,2022-05-04,Engineer,Finance,37744.18,Active,,4.0,0626301180,,M,A,2000.00
+EMP0273,Diana Dupont,@c,33,2014-06-12,Developer,Legal,42690.27,Active,,11.9,0688158177,,F,C,2000.00
+EMP0274,Bob Martin,d@.com,42,2011-06-13,Manager,Finance,41487.88,Active,,14.9,0626445384,,M,A,2000.00
+EMP0275,Jalil Alami,e@f,29,2018-11-10,Engineer,Legal,23786.57,Active,,7.5,0638818707,,F,C,2000.00
+EMP0276,Zara El Idrissi,x275@external.net,40,2023-10-10,Engineer,Marketing,40662.81,Active,,2.6,0618184472,,M,C,2000.00
+EMP0277,Zara El Idrissi,x276@external.net,40,2021-10-17,Analyst,Marketing,36930.88,Inactive,2025-01-02,4.5,0683083942,,M,C,2000.00
+EMP0278,Zara El Idrissi,x277@external.net,39,2018-09-17,Analyst,IT,30093.31,Active,,7.6,0647706144,,M,A,2000.00
+EMP0279,Zara El Idrissi,x278@external.net,46,2013-07-31,Developer,Operations,17861.5,Active,,12.8,0639448924,,F,A,2000.00
+EMP0280,Zara El Idrissi,x279@external.net,37,2015-04-22,Consultant,Finance,34027.76,Active,,11.0,0686188876,,F,B,2000.00
+EMP0281,Zara El Idrissi,x280@external.net,37,2022-02-28,Engineer,Finance,11339.52,Active,,4.2,0690753812,,F,A,2000.00
+EMP0282,Zara El Idrissi,x281@external.net,42,2023-10-10,Director,Legal,14566.02,Active,,2.6,0617993466,,M,B,2000.00
+EMP0283,Zara El Idrissi,x282@external.net,34,2021-10-21,Director,Legal,42851.16,Active,,4.5,0688653825,,M,C,2000.00
+EMP0284,Zara El Idrissi,x283@external.net,29,2019-10-19,Manager,Legal,900000,Active,,6.5,0692370625,,M,B,2000.00
+EMP0285,Zara El Idrissi,x284@external.net,38,2016-11-18,Manager,Legal,905000,Active,,9.4,0686884584,,M,B,2000.00
+EMP0286,Zara El Idrissi,x285@external.net,41,2023-09-18,Analyst,Marketing,910000,Inactive,2024-03-20,2.6,0656548066,,M,B,2000.00
+EMP0287,Zara El Idrissi,x286@external.net,50,2020-01-07,Manager,Operations,915000,Active,,6.3,0644448045,,M,A,2000.00
+EMP0288,Zara El Idrissi,x287@external.net,32,2013-09-24,Engineer,IT,920000,Active,,12.6,0674355957,,F,B,2000.00
+EMP0289,Zara El Idrissi,x288@external.net,50,2016-08-12,Director,Finance,925000,Active,,9.7,0660393104,,F,A,2000.00
+EMP0290,Zara El Idrissi,x289@external.net,29,2023-04-29,Engineer,Legal,930000,Active,,3.0,0631086112,,M,A,2000.00
+EMP0291,Zara El Idrissi,x290@external.net,27,2022-06-06,Developer,IT,935000,Active,,3.9,0616661956,,M,B,2000.00
+EMP0292,Zara El Idrissi,x291@external.net,35,2011-03-23,Engineer,Finance,940000,Active,,15.1,0693898287,,F,A,2000.00
+EMP0293,Zara El Idrissi,x292@external.net,38,2013-10-31,Engineer,Finance,945000,Active,,12.5,0673209094,,M,C,2000.00
+EMP0294,Zara El Idrissi,x293@external.net,34,2014-02-23,Director,Operations,950000,Active,,12.2,0669020960,,M,C,2000.00
+EMP0295,Zara El Idrissi,x294@external.net,44,2011-05-20,Analyst,Legal,955000,Active,,14.9,0665564347,,F,B,2000.00
+EMP0296,Grace Cohen,grace.cohen@company.ma,27,2019-05-23,Consultant,Operations,990000,Active,,6.9,0662989744,,M,B,2000.00
+EMP0297,Imane Rousseau,imane.rousseau@company.ma,44,2023-11-30,Engineer,Operations,991000,Active,,2.4,0638439415,,F,B,2000.00
+EMP0298,Bob Alami,bob.alami@company.ma,44,2014-07-13,Director,IT,992000,Inactive,2025-08-07,11.8,0662089786,,F,A,2000.00
+EMP0299,Eve Cohen,eve.cohen@company.ma,50,2020-04-11,Consultant,HR,993000,Inactive,,6.1,0630084652,,F,B,2000.00
+EMP0300,Bob Smith,bob.smith@company.ma,46,2022-08-15,Consultant,IT,994000,Active,,3.7,0661411224,,M,B,2000.00

@@ -1,0 +1,314 @@
+/* report.css — AnalytiQ Pro
+   Styles pour le rapport PDF WeasyPrint
+   Auteur : Othmane Afif — analytiq-pro.com — 2025
+*/
+
+/* ── RESET & BASE ─────────────────────────────────── */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', 'DejaVu Sans', 'Arial', sans-serif;
+    font-size: 11pt;
+    line-height: 1.4;
+    margin: 1.8cm 2cm;
+    color: #212121;
+    background-color: #ffffff;
+}
+
+/* ── TYPOGRAPHIE ──────────────────────────────────── */
+h1 {
+    font-size: 18pt;
+    color: #1a5276;
+    margin-bottom: 0.3em;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 13pt;
+    color: #1a5276;
+    border-bottom: 1.5px solid #d0d8e4;
+    padding-bottom: 4px;
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 11pt;
+    color: #34495e;
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+}
+
+p {
+    margin-bottom: 0.5em;
+}
+
+/* ── HEADER ───────────────────────────────────────── */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #1a5276;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+}
+
+.header-left {
+    flex: 1;
+}
+
+.header-right {
+    text-align: right;
+    font-size: 9pt;
+    color: #6c757d;
+}
+
+.logo {
+    margin-bottom: 8px;
+}
+
+.report-title {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #1a5276;
+    margin: 0;
+}
+
+.report-subtitle {
+    font-size: 10pt;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+/* ── SECTION ACI PRINCIPAL ────────────────────────── */
+.aci-main-block {
+    text-align: center;
+    background-color: #f8fafd;
+    border: 1px solid #d0d8e4;
+    border-radius: 6px;
+    padding: 20px;
+    margin: 1em 0 1.2em 0;
+}
+
+.aci-score {
+    font-size: 48pt;
+    font-weight: bold;
+    color: #1a5276;
+    line-height: 1.0;
+}
+
+.aci-score-label {
+    font-size: 14pt;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.progress-container {
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    height: 24px;
+    overflow: hidden;
+    margin: 10px auto;
+    max-width: 480px;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 0.3s ease;
+}
+
+.progress-elite      { background-color: #2e7d32; }
+.progress-acceptable { background-color: #1976d2; }
+.progress-moderate   { background-color: #f57c00; }
+.progress-low        { background-color: #c62828; }
+.progress-critical   { background-color: #424242; }
+
+.aci-band {
+    display: inline-block;
+    padding: 5px 20px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 13pt;
+    margin: 8px 0;
+}
+
+.band-elite      { background-color: #2e7d32; }
+.band-acceptable { background-color: #1976d2; }
+.band-moderate   { background-color: #f57c00; }
+.band-low        { background-color: #c62828; }
+.band-critical   { background-color: #424242; }
+
+.interpretation {
+    font-size: 10pt;
+    color: #4a4a4a;
+    margin-top: 10px;
+    font-style: italic;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── TABLEAUX ─────────────────────────────────────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.6em 0 1em 0;
+    font-size: 10pt;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 5px 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background-color: #eaf0fb;
+    font-weight: bold;
+    color: #1a5276;
+    font-size: 9.5pt;
+}
+
+tr:nth-child(even) td {
+    background-color: #fafafa;
+}
+
+td.center, th.center {
+    text-align: center;
+}
+
+td.right, th.right {
+    text-align: right;
+}
+
+.severity-critical {
+    color: #c62828;
+    font-weight: bold;
+}
+
+.severity-common {
+    color: #e65100;
+}
+
+/* ── RECOMMANDATIONS ──────────────────────────────── */
+.recommendations-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5em 0;
+}
+
+.recommendations-list li {
+    padding: 5px 5px 5px 22px;
+    position: relative;
+    border-left: 3px solid #1976d2;
+    margin-bottom: 5px;
+    background-color: #f0f6ff;
+    font-size: 10pt;
+}
+
+.recommendations-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 6px;
+    color: #1976d2;
+    font-weight: bold;
+}
+
+/* ── CHECKLIST AMS ────────────────────────────────── */
+.check-pass {
+    color: #2e7d32;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.check-fail {
+    color: #c62828;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.ams-score-summary {
+    background-color: #eaf0fb;
+    border: 1px solid #d0d8e4;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 10pt;
+    font-weight: bold;
+    color: #1a5276;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+/* ── DÉDUPLICATION ────────────────────────────────── */
+.dedup-box {
+    background-color: #fff3e0;
+    border-left: 4px solid #f57c00;
+    padding: 8px 14px;
+    margin: 0.8em 0;
+    font-size: 10pt;
+    border-radius: 0 4px 4px 0;
+}
+
+.dedup-box strong {
+    color: #e65100;
+}
+
+/* ── FOOTER ───────────────────────────────────────── */
+.footer {
+    margin-top: 2em;
+    border-top: 1px solid #ddd;
+    padding-top: 8px;
+    font-size: 8.5pt;
+    color: #9e9e9e;
+    text-align: center;
+}
+
+/* ── ALERTES VIDES ────────────────────────────────── */
+.empty-notice {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 10pt;
+    padding: 6px 0;
+}
+
+/* ── MISE EN PAGE @PAGE ───────────────────────────── */
+@page {
+    margin: 1.5cm 1.8cm;
+    @bottom-center {
+        content: "AnalytiQ Pro™  —  analytiq-pro.com  —  Page " counter(page) " / " counter(pages);
+        font-size: 8pt;
+        color: #9e9e9e;
+        font-family: 'Arial', sans-serif;
+    }
+}
+
+/* ── SAUTS DE PAGE ────────────────────────────────── */
+.page-break-before {
+    page-break-before: always;
+}
+
+h2 {
+    page-break-after: avoid;
+}
+
+table {
+    page-break-inside: auto;
+}
+
+tr {
+    page-break-inside: avoid;
+}
+
+/* ── RTL (réservé V2) ─────────────────────────────── */
+.rtl-block {
+    direction: rtl;
+    text-align: right;
+}
